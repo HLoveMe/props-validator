@@ -1,0 +1,23 @@
+{
+  "name": "props-validator",
+  "version": "0.0.1",
+  "description": "Props Validator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "tsc && webpack --config webpack.config.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@types/prop-types": "^15.7.4",
+    "prop-types": "^15.8.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.16.12",
+    "@babel/preset-env": "^7.16.11",
+    "babel-loader": "^8.2.3",
+    "webpack": "^5.67.0",
+    "webpack-cli": "^4.9.2"
+  }
+}
