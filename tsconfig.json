@@ -16,8 +16,8 @@
     "outDir": "./cjs/dev",
   },
   "include": [
-    "props-test-vue/PropsValidator/**/*.ts",
-    "props-test-vue/PropsValidator/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
   ],
   "exclude": [
     "node_modules"
