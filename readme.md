@@ -197,7 +197,7 @@
   // 具体对象getA：可有 PropsPlugin.getTypeSpec自动生成 
   const ApiSpec={
   	getA:{
-  		tag?:'',
+  		__tag?:'',
   		spec:{
   			data:Props.arrayOf(Props.number).isRequired,
   			code:Props.number.isRequired
@@ -205,7 +205,7 @@
   	}
   	getC:{
   		getC1:{
-  			tag?:"",
+  			__tag?:"",
   			spec:Props.arrayOf(Props.number).isRequired,
   			handle:res=>res.data
   		},
