@@ -194,6 +194,7 @@
   }
   
   // 增加验证对象
+  // 具体对象getA：可有 PropsPlugin.getTypeSpec自动生成 
   const ApiSpec={
   	getA:{
   		tag?:'',
@@ -227,6 +228,7 @@
 * API
 
   * setEnv 设置环境 development 会进行格式检查。production 不会进行格式检查
+
   * extendsValidator 用于扩展数据检查函数
 
   * PropsPlugin 生成验证对象 ,可扩展生成的验证对象。见上
