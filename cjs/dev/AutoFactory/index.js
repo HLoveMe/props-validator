@@ -3,7 +3,7 @@
  * @Author: zihao.zhu@united-imaging.com
  * @Date: 2022-01-14 16:17:32
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-01-24 11:22:06
+ * @Last Modified time: 2022-02-22 09:16:39
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
@@ -117,7 +117,7 @@ export default function initAutoFactory(WsProps) {
         };
         PropsPlugin.extendsFactory = function (plugin) {
             if (!!plugin.test && typeof plugin.test === 'function' && !!plugin.choice && typeof plugin.choice === 'function' && !!plugin.execMap) {
-                PropsPlugin.extends.push(plugin);
+                PropsPlugin.extends.unshift(plugin);
             }
         };
         PropsPlugin.__getID = () => {
@@ -168,7 +168,7 @@ function extendTypedArray(plugin) {
 function extendBigInt(plugin) {
     plugin.extendsFactory && plugin.extendsFactory({
         test: (source) => {
-            return typeof source === typeof 1n;
+            return typeof source === typeof BigInt(1);
         },
         choice: (props, propName, typeObject) => 'bigint',
         execMap: {

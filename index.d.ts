@@ -2,7 +2,7 @@
  * @Author: zihao.zhu@united-imaging.com 
  * @Date: 2022-01-21 14:19:46 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-01-26 09:52:31
+ * @Last Modified time: 2022-02-22 09:32:12
  * @desc : 类型声明和验证 
  */
 /* eslint-disable @typescript-eslint/no-redeclare */
@@ -74,7 +74,7 @@ declare interface PropsPluginSpace {
   extendsFactory(plugin: PluginExec): void;
 }
 
-export interface PropsValidator {
+export interface PropsValidatorClass {
   env: RunEnv;
   //
   any: PropTypes.Requireable<any>;
@@ -185,5 +185,6 @@ export declare interface PromiseExtends<T> extends Promise<T> {
   validator(typeSpec: TypeSpecSpace, handle?: (source: any) => ValidatorSource): PromiseExtends<ValidatorData>;
 }
 
+const PropsValidator:PropsValidatorClass;
 
 export default PropsValidator;
