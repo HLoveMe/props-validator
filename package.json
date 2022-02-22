@@ -4,7 +4,7 @@
   "description": "Props Validator",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "test": "tsc && webpack --config webpack.config.test.js",
     "build": "tsc && webpack --config webpack.config.js"
   },
   "author": "",
@@ -15,10 +15,11 @@
   },
   "devDependencies": {
     "@babel/core": "^7.16.12",
+    "@babel/plugin-proposal-optional-chaining": "^7.16.7",
     "@babel/preset-env": "^7.16.11",
     "babel-loader": "^8.2.3",
+    "terser-webpack-plugin": "^5.3.1",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.2"
-  },
-  "main": "index.js"
+  }
 }

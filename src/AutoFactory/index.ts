@@ -1,80 +1,124 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /*
- * @Author: zihao.zhu@united-imaging.com 
- * @Date: 2022-01-14 16:17:32 
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-14 16:17:32
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-02-22 16:08:41
+ * @Last Modified time: 2022-02-22 17:23:16
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
  * 3:函数
- * 4:复杂对象嵌套 
+ * 4:复杂对象嵌套
  */
 
-import { toTypeString } from '../util';
-import { isProduction } from '../Env';
+import { toTypeString } from "../util";
+import { isProduction } from "../Env";
 declare interface TypeObject {
-  type: string;//[object Number]
-  minType: string;// Number
-  validator: Array<string>;// [wsProps.number,wsProps.number.isRequire]
+  type: string; //[object Number]
+  minType: string; // Number
+  validator: Array<string>; // [wsProps.number,wsProps.number.isRequire]
 }
 export declare interface FactoryOption {
   maxDepth: number;
   topName: string;
 }
-declare type ExecName = string
-export declare type ExecMap = { [K in ExecName]: (props: any, propName: string, typeObject: TypeObject) => string };
+declare type ExecName = string;
+export declare type ExecMap = {
+  [K in ExecName]: (
+    props: any,
+    propName: string,
+    typeObject: TypeObject
+  ) => string;
+};
 
 export declare interface PluginExec {
   test: () => boolean;
   choice: (props: any, propName: string, typeObject: TypeObject) => ExecName;
-  execMap: ExecMap
+  execMap: ExecMap;
 }
 
 const PropsPlugin: any = {
   extends: [] as Array<PluginExec>,
-  getTypeSpec: () => '{}',
-  extendsFactory: () => { },
+  getTypeSpec: () => "{}",
+  extendsFactory: () => {},
 };
 
-const getType = (value: string) => { const [a, target] = value.match(/\[object (\w+)\]/) ?? []; return target }
+const getType = (value: string) => {
+  const [_, target] = value.match(/\[object (\w+)\]/) || [];
+  return target;
+};
 
-const Wrapper = (type: string, topName: string): Array<string> => [`${topName}.${type}`, `${topName}.${type}.isRequired`]
+const Wrapper = (type: string, topName: string): Array<string> => [
+  `${topName}.${type}`,
+  `${topName}.${type}.isRequired`,
+];
 
 export default function initAutoFactory(WsProps: any) {
   if (!isProduction()) {
-
-    const DefaultOption = { maxDepth: 3, topName: 'WsPropsType' }
-    const baseSource = [null, undefined, 1, '', false, () => { }, Symbol.for(''), new Date(), /\w/, Promise.resolve()];
-    const seniorSource = [[], {},]
+    const DefaultOption = { maxDepth: 3, topName: "WsPropsType" };
+    const baseSource = [
+      null,
+      undefined,
+      1,
+      "",
+      false,
+      () => {},
+      Symbol.for(""),
+      new Date(),
+      /\w/,
+      Promise.resolve(),
+    ];
+    const seniorSource = [[], {}];
     let typeArray: Array<TypeObject> = [];
     const exec: any = { option: DefaultOption };
 
     const getValidator = (type: string) => {
       type = type.toLocaleLowerCase();
       // var vaFunc = WsProps[type];
-      if (type === getType(toTypeString({})).toLocaleLowerCase()) type = 'shape($)';
+      if (type === getType(toTypeString({})).toLocaleLowerCase())
+        type = "shape($)";
       // if (!!vaFunc === false) type = 'any';
-      return Wrapper(type, exec.option.topName)
-    }
+      return Wrapper(type, exec.option.topName);
+    };
 
-    baseSource.forEach(item => {
-      const objStr = toTypeString(item)
+    baseSource.forEach((item) => {
+      const objStr = toTypeString(item);
       const minType = getType(objStr);
-      (exec as any)[`exec${minType}`] = function (props: string, value: any, isRequire: boolean = false): string {
-        return typeArray.find(item => item.type === objStr)?.validator[Number(isRequire)] || ''
-      }
-    })
-    exec.execAny = function (props: string, value: any, isRequire: boolean = false): string {
-      return typeArray.find(item => item.type === toTypeString(null))?.validator[Number(isRequire)] || '';
-    }
-    exec.execUnknown = function (props: string, value: any, isRequire: boolean = false): string {
-      const objStr = toTypeString(value)
-      const info = typeArray.find(item => item.type === objStr)
+      (exec as any)[`exec${minType}`] = function (
+        props: string,
+        value: any,
+        isRequire: boolean = false
+      ): string {
+        return (
+          typeArray.find((item) => item.type === objStr)?.validator[
+            Number(isRequire)
+          ] || ""
+        );
+      };
+    });
+    exec.execAny = function (
+      props: string,
+      value: any,
+      isRequire: boolean = false
+    ): string {
+      return (
+        typeArray.find((item) => item.type === toTypeString(null))?.validator[
+          Number(isRequire)
+        ] || ""
+      );
+    };
+    exec.execUnknown = function (
+      props: string,
+      value: any,
+      isRequire: boolean = false
+    ): string {
+      const objStr = toTypeString(value);
+      const info = typeArray.find((item) => item.type === objStr);
       if (!!info === false) {
         let minType = getType(objStr);
         minType = minType.toLocaleLowerCase();
-        if (!!WsProps[minType] === true) return Wrapper(minType, exec.option.topName)[Number(isRequire)]
+        if (!!WsProps[minType] === true)
+          return Wrapper(minType, exec.option.topName)[Number(isRequire)];
       }
       return exec.execAny(props, value, isRequire);
     };
@@ -82,41 +126,80 @@ export default function initAutoFactory(WsProps: any) {
     // exec.execUndefined = exec.execAny;
     // exec.execNull = exec.execAny;
 
-    exec.execObject = function (props: string, target: any, isRequire: boolean = false, depth = 0, option: FactoryOption): any {
-      const objInfo: TypeObject = typeArray.find(item => item.type === toTypeString({})) || {} as TypeObject;
-      if (Object.keys(target).length === 0 || depth === option.maxDepth) return Wrapper(objInfo.minType.toLocaleLowerCase(), exec.option.topName)[Number(isRequire)]
+    exec.execObject = function (
+      props: string,
+      target: any,
+      isRequire: boolean = false,
+      depth = 0,
+      option: FactoryOption
+    ): any {
+      const objInfo: TypeObject =
+        typeArray.find((item) => item.type === toTypeString({})) ||
+        ({} as TypeObject);
+      if (Object.keys(target).length === 0 || depth === option.maxDepth)
+        return Wrapper(
+          objInfo.minType.toLocaleLowerCase(),
+          exec.option.topName
+        )[Number(isRequire)];
       const result = {};
-      Object.keys(target).forEach(key => {
+      Object.keys(target).forEach((key) => {
         const value = target[key];
         const func = PropsPlugin.switchExec(value, key, target);
         if (func && typeof func === typeof Function) {
-          (result as any)[key] = func(props, value, isRequire, depth + 1, option);
+          (result as any)[key] = func(
+            props,
+            value,
+            isRequire,
+            depth + 1,
+            option
+          );
         }
-      })
+      });
       if (depth === 0) return result;
-      const { validator } = objInfo
+      const { validator } = objInfo;
       const template = validator[Number(isRequire)];
-      return template.replace('$', JSON.stringify(result,));
-    }
-    exec.execArray = function (props: string, value: any[] = [], isRequire: boolean = false, depth = 0, option: FactoryOption): string {
-      const sourceInfo = typeArray.find(item => item.type === toTypeString([])) || {} as TypeObject;
-      if (value.length === 0 || depth === option.maxDepth) return sourceInfo.validator[Number(isRequire)];
+      return template.replace("$", JSON.stringify(result));
+    };
+    exec.execArray = function (
+      props: string,
+      value: any[] = [],
+      isRequire: boolean = false,
+      depth = 0,
+      option: FactoryOption
+    ): string {
+      const sourceInfo =
+        typeArray.find((item) => item.type === toTypeString([])) ||
+        ({} as TypeObject);
+      if (value.length === 0 || depth === option.maxDepth)
+        return sourceInfo.validator[Number(isRequire)];
       const execFunc = PropsPlugin.switchExec(value[0]);
       const validator = sourceInfo.validator[Number(false)];
       //TODO:isRequire 是否直接给false
-      const result = `${validator}Of(${execFunc(props, value[0], false, depth + 1, option)})${isRequire ? '.isRequired' : ''}`
-      // const 
-      return result
-    }
+      const result = `${validator}Of(${execFunc(
+        props,
+        value[0],
+        false,
+        depth + 1,
+        option
+      )})${isRequire ? ".isRequired" : ""}`;
+      // const
+      return result;
+    };
 
-    PropsPlugin.switchExec = function switchExec(source: any, key?: string, target?: any): any {
-      const type = typeArray.find(item => item.type === toTypeString(source))
+    PropsPlugin.switchExec = function switchExec(
+      source: any,
+      key?: string,
+      target?: any
+    ): any {
+      const type = typeArray.find((item) => item.type === toTypeString(source));
       let execFunc: Function | null = null;
       const fName = type ? `exec${type.minType}` : null;
       if (fName && !!exec[fName] === true) {
-        execFunc = exec[fName]
+        execFunc = exec[fName];
       } else {
-        const plugin = (PropsPlugin.extends as any[]).find(item => item.test(source));
+        const plugin = (PropsPlugin.extends as any[]).find((item) =>
+          item.test(source)
+        );
         if (plugin) {
           const { choice, execMap } = plugin;
           const execName = choice(source, key, target);
@@ -124,40 +207,64 @@ export default function initAutoFactory(WsProps: any) {
         }
       }
       return execFunc || exec.execAny;
-    }
+    };
 
-    PropsPlugin.installType = function (source: any, isRequire: boolean = false) {
+    PropsPlugin.installType = function (
+      source: any,
+      isRequire: boolean = false
+    ) {
       typeArray = (function (target: any[]) {
-        return target.map(item => {
-          const targetType = toTypeString(item)
-          const minType = getType(targetType)
-          const validator = getValidator(minType)
-          return { type: targetType, minType, validator, }
-        })
-      })([...baseSource, ...seniorSource])
-    }
+        return target.map((item) => {
+          const targetType = toTypeString(item);
+          const minType = getType(targetType);
+          const validator = getValidator(minType);
+          return { type: targetType, minType, validator };
+        });
+      })([...baseSource, ...seniorSource]);
+    };
 
     PropsPlugin.extendsFactory = function (plugin: PluginExec) {
-      if (!!plugin.test && typeof plugin.test === 'function' && !!plugin.choice && typeof plugin.choice === 'function' && !!plugin.execMap) {
+      if (
+        !!plugin.test &&
+        typeof plugin.test === "function" &&
+        !!plugin.choice &&
+        typeof plugin.choice === "function" &&
+        !!plugin.execMap
+      ) {
         PropsPlugin.extends.unshift(plugin);
       }
-    }
+    };
     PropsPlugin.__getID = () => {
-      const IDS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      const IDS =
+        "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
       const IDL = IDS.length;
-      let UID = '';
+      let UID = "";
       for (let i = 0; i < 10; i++) {
         UID += IDS.charAt(Math.floor(Math.random() * IDL));
       }
       return UID;
-    }
-    PropsPlugin.getTypeSpec = function (source: any, isRequire: boolean = true, option: any = DefaultOption) {
-      option = { ...DefaultOption, ...option }
+    };
+    PropsPlugin.getTypeSpec = function (
+      source: any,
+      isRequire: boolean = true,
+      option: any = DefaultOption
+    ) {
+      option = { ...DefaultOption, ...option };
       exec.option = option;
       PropsPlugin.installType();
-      const result = PropsPlugin.switchExec(source)('', source, isRequire, 0, option);
-      (typeof result === 'object') && (result.__tag = `'${PropsPlugin.__getID()}'`);
-      return JSON.stringify(result, null, 2).replace(/\n/g, '').replace(/"/g, "").replace(/\\/g, "");
+      const result = PropsPlugin.switchExec(source)(
+        "",
+        source,
+        isRequire,
+        0,
+        option
+      );
+      typeof result === "object" &&
+        (result.__tag = `'${PropsPlugin.__getID()}'`);
+      return JSON.stringify(result, null, 2)
+        .replace(/\n/g, "")
+        .replace(/"/g, "")
+        .replace(/\\/g, "");
     };
 
     extendTypedArray(PropsPlugin);
@@ -169,38 +276,61 @@ export default function initAutoFactory(WsProps: any) {
 
 function extendTypedArray(plugin: typeof PropsPlugin) {
   // 对typedArray 扩展
-  plugin.extendsFactory && plugin.extendsFactory({
-    test: (source: any) => {
-      const type = toTypeString(new ArrayBuffer(0))
-      const minType = getType(type)
-      if (source && !!source.buffer && Object.prototype.toString.call(source.buffer) === type) return true;
-      if (source && source.constructor && source.constructor.name === minType) return true;
-      return false;
-    },
-    choice: (props: any, propName: string, typeObject: TypeObject): string => 'execTypedArray',
-    execMap: {
-      execTypedArray: function (props: any, value: any, isRequire: boolean = false, depth = 0, option: FactoryOption): string {
-        const type = toTypeString(value);
-        const minType = getType(type).toLocaleLowerCase().replace('array', '');
-        return `${Wrapper(minType, option.topName)[Number(isRequire)]}`
-      }
-    },
-  } as unknown as PluginExec)
+  plugin.extendsFactory &&
+    plugin.extendsFactory({
+      test: (source: any) => {
+        const type = toTypeString(new ArrayBuffer(0));
+        const minType = getType(type);
+        if (
+          source &&
+          !!source.buffer &&
+          Object.prototype.toString.call(source.buffer) === type
+        )
+          return true;
+        if (source && source.constructor && source.constructor.name === minType)
+          return true;
+        return false;
+      },
+      choice: (props: any, propName: string, typeObject: TypeObject): string =>
+        "execTypedArray",
+      execMap: {
+        execTypedArray: function (
+          props: any,
+          value: any,
+          isRequire: boolean = false,
+          depth = 0,
+          option: FactoryOption
+        ): string {
+          const type = toTypeString(value);
+          const minType = getType(type)
+            .toLocaleLowerCase()
+            .replace("array", "");
+          return `${Wrapper(minType, option.topName)[Number(isRequire)]}`;
+        },
+      },
+    } as unknown as PluginExec);
 }
 
-
 function extendBigInt(plugin: typeof PropsPlugin) {
-  plugin.extendsFactory && plugin.extendsFactory({
-    test: (source: any) => {
-      return typeof source === typeof 1n;
-    },
-    choice: (props: any, propName: string, typeObject: TypeObject): string => 'bigint',
-    execMap: {
-      bigint: function (props: any, value: any, isRequire: boolean = false, depth = 0, option: FactoryOption): string {
-        const type = toTypeString(value);
-        const minType = getType(type).toLocaleLowerCase()
-        return `${Wrapper(minType, option.topName)[Number(isRequire)]}`
-      }
-    },
-  } as unknown as PluginExec)
+  plugin.extendsFactory &&
+    plugin.extendsFactory({
+      test: (source: any) => {
+        return typeof source === typeof 1n;
+      },
+      choice: (props: any, propName: string, typeObject: TypeObject): string =>
+        "bigint",
+      execMap: {
+        bigint: function (
+          props: any,
+          value: any,
+          isRequire: boolean = false,
+          depth = 0,
+          option: FactoryOption
+        ): string {
+          const type = toTypeString(value);
+          const minType = getType(type).toLocaleLowerCase();
+          return `${Wrapper(minType, option.topName)[Number(isRequire)]}`;
+        },
+      },
+    } as unknown as PluginExec);
 }

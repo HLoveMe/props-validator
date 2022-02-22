@@ -1,4 +1,3 @@
-
 const path = require('path');
 const TerserPlugin = require('terser-webpack-plugin')
 module.exports = {
@@ -9,13 +8,12 @@ module.exports = {
   },
   watch: false,
   output: {
-    filename: "[name].js",
+    // path: path.join(__dirname, "props-test-vue", 'node_modules', 'props-validator', 'cjs'),
+    // path: path.join(__dirname, "props-test-react", 'node_modules', 'props-validator', 'cjs'),
     path: path.join(__dirname, "cjs"),
-    // commonjs/2 暴露给commonjs模块  amd 暴露给amd模块。umd 暴露给所有模块
-    // commonjs和commonjs2几乎相同，只不过commonjs只包含exports，而commonjs2还包含module.exports，所以直接使用commonjs2即可
+    filename: "[name].js",
     libraryTarget: 'umd',
-    // libraryExport: "default",// 只导出 default
-    library: 'PropsValidator' // amd umd 需要指定 值为你的库的名称 会
+    library: 'PropsValidator'
   },
   module: {
     rules: [{

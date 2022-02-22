@@ -1,1 +1,926 @@
-!function(e,t){"object"==typeof exports&&"object"==typeof module?module.exports=t():"function"==typeof define&&define.amd?define([],t):"object"==typeof exports?exports.PropsValidator=t():e.PropsValidator=t()}(self,(function(){return(()=>{"use strict";var e={n:t=>{var n=t&&t.__esModule?()=>t.default:()=>t;return e.d(n,{a:n}),n},d:(t,n)=>{for(var r in n)e.o(n,r)&&!e.o(t,r)&&Object.defineProperty(t,r,{enumerable:!0,get:n[r]})},o:(e,t)=>Object.prototype.hasOwnProperty.call(e,t),r:e=>{"undefined"!=typeof Symbol&&Symbol.toStringTag&&Object.defineProperty(e,Symbol.toStringTag,{value:"Module"}),Object.defineProperty(e,"__esModule",{value:!0})}},t={};e.r(t),e.d(t,{RunEnv:()=>_,default:()=>F});const n=require("prop-types");var r=e.n(n);let o=()=>!0;class i extends Error{struct={propsName:"",value:void 0,expectedType:"",preciseType:""};name="ValidatorError";propsName;info;value;constructor(e,t,n,r){super(e),this.propsName=t,this.info=n,this.value=r}toString(){let e;if(this.info instanceof c||this.info instanceof i)return this.struct={propsName:this.info.propsName,value:"",expectedType:"",preciseType:""},this.info.toString();if(this.info instanceof Error){const t=this.info.message.match(/(?<=(`))([\[\]\w<>\d\.]+)(?=(`))/g);if(!t)return this.info.message;{const[n,r,o,i]=t;e={propsName:n,value:o,expectedType:i,preciseType:r}}}else e=this.info;this.struct=e;const{propsName:t,value:n,expectedType:r,preciseType:o}=e;return`属性:[${t}]的值等于['${n}'],期待为 ${r} 类型/值，实际类型/值： ${o} .`}}class c extends Error{name="ObjectValidatorError";source=[];propsName;constructor(e,t,n){super(e),this.source=n,this.propsName=t}toString(){const e={};return this.source.forEach((t=>{const n=t.toString(),{struct:{propsName:r}}=t;e[r]=n})),e}}const a=Function.call.bind(Object.prototype.toString),s="SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED",u=Symbol.for("validatorDisplayName"),l=Function.call.bind(Object.prototype.hasOwnProperty);function f(e){if(null==e)return""+e;const t=p(e);if("object"===t){if(e instanceof Date)return"date";if(e instanceof RegExp)return"regexp"}return t}function p(e){const t=typeof e;return Array.isArray(e)?"array":e instanceof RegExp?"object":function(e,t){return"symbol"===e||!!t&&("Symbol"===t["@@toStringTag"]||"function"==typeof Symbol&&t instanceof Symbol)}(t,e)?"symbol":t}function y(e){function t(t,n,r,o,i,c){return c=c||r,null==n[r]?t?d(r,n[r],"非空","null/undefined"):null:e(n,r,o,i,c)}const n=t.bind(null,!1);return n.isRequired=t.bind(null,!0),n}function d(e,t,n,r){return new i(`${e} 验证失败`,e,{propsName:e,value:t,expectedType:n,preciseType:r})}function b(e){return y((function(t,n){const r=t[n];if(a(r)!==e){const t=f(r);return d(n,r,e,t)}return null}))}function m(e,t,n=!0){if(o())return null;let r={},a=null;for(const n in e)if("__tag"!==n&&l(e,n))try{if("function"!=typeof e[n]){const e=Error("验证函数类型错误");throw e.name="Invariant Violation",e}a=e[n](t,n,"","",null,s),r[n]=0==!!a||a instanceof c?a:new i(`${n} 验证失败`,n,a,t[n])}catch(e){r=e;break}return Object.values(r).filter((e=>1==!!e)).length>0?new Error(function(e){const t={};return Object.keys(e).forEach((n=>{let r=e[n];0!=!!r&&(r instanceof c||(r=r instanceof i?r:new i(`${n} 验证失败`,n,r)),t[n]=r.toString())})),JSON.stringify(t,null,2)}(r)):null}function h(e,t,n){!o()&&console.log(`Validator Error。 [typeSpec.__tag]:[${t.__tag}] =>`,n)}const g={extends:[],getTypeSpec:()=>"{}",extendsFactory:()=>{}},v=e=>{const[t,n]=e.match(/\[object (\w+)\]/)??[];return n},x=(e,t)=>[`${t}.${e}`,`${t}.${e}.isRequired`],w=($=e=>{const t=Date.parse(e);return"number"==typeof t&&!isNaN(t)&&t>0},y((function(e,t){const n=e[t];if($&&!$(n)){const r=f(n);return new Error(`${JSON.stringify(e)}-[${t}]-[${n}] is type ${r} , but expected value is test by Date.parse`)}return null})));var $;const N={buffer:b(a(new ArrayBuffer(0))),dataview:b(a(new DataView(new ArrayBuffer(0)))),uint8:b(a(new Uint8Array)),uint16:b(a(new Uint16Array)),uint32:b(a(new Uint32Array)),int8:b(a(new Int8Array)),int16:b(a(new Int16Array)),int32:b(a(new Int32Array)),float32:b(a(new Float32Array)),float64:b(a(new Float64Array)),uint8clamped:b(a(new Uint8ClampedArray))};function E(e){return function(t){function n(t,n,r){const o=n[r];return null==o?function(t,n){const r=t[n];if(a(r)!==e){const t=f(r);return new Error(`Invalid ${n} value is ${r} ,but expected ${e} but get ${t}`)}return null}(n,r):t?new Error(`The \`${r}\` is null/Undefined as required , but its value is ${a(o)}`):null}const r=n.bind(null,!1);return r.isRequired=n.bind(null,!0),r}()}const S={null:E(a(null)),undefined:E(a(void 0))},O={promise:b(a(new Promise((()=>{}))))},T={dateString:(j=/(\d){4}?-(\d){2}?-(\d){2}? (\d){2}?:(\d){2}?:(\d){2}?/,y((function(e,t){const n=e[t];if(j&&!1===j.test(n)){const r=f(n);return new Error(`${JSON.stringify(e)}-[${t}]-[${n}] is type ${r} , but expected value is test(/^${j}$/)`)}return null}))),date:w,...N,...S,...O};var j,A,_;(A=(globalThis||void 0).Promise.prototype).validator||(A.validator=function(e,t){if(!o()){const n=n=>{const r=t?t(n):n,o=m(e,r);return"object"==typeof n&&null!==n&&Object.defineProperty(n,"__props__error",{configurable:!1,enumerable:!1,get:()=>o}),o&&h&&h(0,e,o),n};return this.then(n)}return this.then((e=>e))}),function(e){e.dev="development",e.prod="production"}(_||(_={}));const P={env:_.dev};var L,D;L=[r(),T,{checkPropTypes:m,boolean:r().bool,function:r().func,shape:function(e){return y((function(t,n,r,o,a){const u=[],l=t[n],f=p(l);if("object"!==f)return d(n,l,"object",f);for(const t in e){const n=e[t];if(!n)continue;const c=n(l,t,r,o,a+"."+t,s);c&&u.push(new i(`${a} 验证失败`,a,c,l))}return u.length>0?new c(`验证错误：${a}`,a,u):null}))},arrayOf:function(e){return y((function(t,n,r,o,c){const a=[],u=t[n];if(!Array.isArray(u))return d(n,u,"[object Array]",p(u));for(let t=0;t<u.length;t++){const n=e(u,t,r,o,c+"["+t+"]",s);n&&a.push(new i(`${c} 验证失败`,c,n,u))}return null}))}},{extendsValidator:function(e,t){P[e]=y(t)},util:{createChainableTypeChecker:y,createExpectedTypeChecker:b,validatorLog:h},apiUtil:{WrapperApi:function(e,t){o();const n=(e,t)=>(Object.keys(e).forEach((r=>{const o=e[r];if("object"==typeof o){let i=t&&t[r];"object"!=typeof i&&(i={}),e[r]=n(o,i)}})),new Proxy(e,{get(e,n){const r=e[n];if("function"==typeof r){const e=t&&t[n]||{};return(...t)=>r(...t).validator(e.spec,e.handler)}return e[n]}}));return n(e,t)}},setEnv:e=>{P.env=e}}],Array.isArray(L)||(L=[L]),L.forEach((e=>Object.getOwnPropertyNames(e).forEach((t=>{const n=e[t];n[u]=t,P[t]=n})))),D=P,o=()=>"production"===D.env,function(e){if(!o()){const n={maxDepth:3,topName:"PropsValidator"},r=[null,void 0,1,"",!1,()=>{},Symbol.for(""),new Date,/\w/,Promise.resolve()],o=[[],{}];let i=[];const c={option:n},s=e=>((e=e.toLocaleLowerCase())===v(a({})).toLocaleLowerCase()&&(e="shape($)"),x(e,c.option.topName));r.forEach((e=>{const t=a(e),n=v(t);c[`exec${n}`]=function(e,n,r=!1){return i.find((e=>e.type===t))?.validator[Number(r)]||""}})),c.execAny=function(e,t,n=!1){return i.find((e=>e.type===a(null)))?.validator[Number(n)]||""},c.execUnknown=function(t,n,r=!1){const o=a(n);if(0==!!i.find((e=>e.type===o))){let t=v(o);if(t=t.toLocaleLowerCase(),1==!!e[t])return x(t,c.option.topName)[Number(r)]}return c.execAny(t,n,r)},c.execObject=function(e,t,n=!1,r=0,o){const s=i.find((e=>e.type===a({})))||{};if(0===Object.keys(t).length||r===o.maxDepth)return x(s.minType.toLocaleLowerCase(),c.option.topName)[Number(n)];const u={};if(Object.keys(t).forEach((i=>{const c=t[i],a=g.switchExec(c,i,t);a&&typeof a==typeof Function&&(u[i]=a(e,c,n,r+1,o))})),0===r)return u;const{validator:l}=s;return l[Number(n)].replace("$",JSON.stringify(u))},c.execArray=function(e,t=[],n=!1,r=0,o){const c=i.find((e=>e.type===a([])))||{};if(0===t.length||r===o.maxDepth)return c.validator[Number(n)];const s=g.switchExec(t[0]);return`${c.validator[Number(!1)]}Of(${s(e,t[0],!1,r+1,o)})${n?".isRequired":""}`},g.switchExec=function(e,t,n){const r=i.find((t=>t.type===a(e)));let o=null;const s=r?`exec${r.minType}`:null;if(s&&1==!!c[s])o=c[s];else{const r=g.extends.find((t=>t.test(e)));if(r){const{choice:i,execMap:a}=r,s=i(e,t,n);o=a[s]||c[s]}}return o||c.execAny},g.installType=function(e,t=!1){var n;n=[...r,...o],i=n.map((e=>{const t=a(e),n=v(t);return{type:t,minType:n,validator:s(n)}}))},g.extendsFactory=function(e){e.test&&"function"==typeof e.test&&e.choice&&"function"==typeof e.choice&&e.execMap&&g.extends.unshift(e)},g.__getID=()=>{const e="ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789",t=e.length;let n="";for(let r=0;r<10;r++)n+=e.charAt(Math.floor(Math.random()*t));return n},g.getTypeSpec=function(e,t=!0,r=n){r={...n,...r},c.option=r,g.installType();const o=g.switchExec(e)("",e,t,0,r);return"object"==typeof o&&(o.__tag=`'${g.__getID()}'`),JSON.stringify(o,null,2).replace(/\n/g,"").replace(/"/g,"").replace(/\\/g,"")},(t=g).extendsFactory&&t.extendsFactory({test:e=>{const t=a(new ArrayBuffer(0)),n=v(t);return!(!e||!e.buffer||Object.prototype.toString.call(e.buffer)!==t)||!(!e||!e.constructor||e.constructor.name!==n)},choice:(e,t,n)=>"execTypedArray",execMap:{execTypedArray:function(e,t,n=!1,r=0,o){const i=a(t),c=v(i).toLocaleLowerCase().replace("array","");return`${x(c,o.topName)[Number(n)]}`}}}),function(e){e.extendsFactory&&e.extendsFactory({test:e=>typeof e==typeof BigInt(1),choice:(e,t,n)=>"bigint",execMap:{bigint:function(e,t,n=!1,r=0,o){const i=a(t),c=v(i).toLocaleLowerCase();return`${x(c,o.topName)[Number(n)]}`}}})}(g)}var t;e.PropsPlugin=g}(P);const F=P;return t})()}));
+(function webpackUniversalModuleDefinition(root, factory) {
+	if(typeof exports === 'object' && typeof module === 'object')
+		module.exports = factory();
+	else if(typeof define === 'function' && define.amd)
+		define([], factory);
+	else if(typeof exports === 'object')
+		exports["PropsValidator"] = factory();
+	else
+		root["PropsValidator"] = factory();
+})(self, function() {
+return /******/ (() => { // webpackBootstrap
+/******/ 	"use strict";
+/******/ 	// The require scope
+/******/ 	var __webpack_require__ = {};
+/******/ 	
+/************************************************************************/
+/******/ 	/* webpack/runtime/compat get default export */
+/******/ 	(() => {
+/******/ 		// getDefaultExport function for compatibility with non-harmony modules
+/******/ 		__webpack_require__.n = (module) => {
+/******/ 			var getter = module && module.__esModule ?
+/******/ 				() => (module['default']) :
+/******/ 				() => (module);
+/******/ 			__webpack_require__.d(getter, { a: getter });
+/******/ 			return getter;
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/define property getters */
+/******/ 	(() => {
+/******/ 		// define getter functions for harmony exports
+/******/ 		__webpack_require__.d = (exports, definition) => {
+/******/ 			for(var key in definition) {
+/******/ 				if(__webpack_require__.o(definition, key) && !__webpack_require__.o(exports, key)) {
+/******/ 					Object.defineProperty(exports, key, { enumerable: true, get: definition[key] });
+/******/ 				}
+/******/ 			}
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/hasOwnProperty shorthand */
+/******/ 	(() => {
+/******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/make namespace object */
+/******/ 	(() => {
+/******/ 		// define __esModule on exports
+/******/ 		__webpack_require__.r = (exports) => {
+/******/ 			if(typeof Symbol !== 'undefined' && Symbol.toStringTag) {
+/******/ 				Object.defineProperty(exports, Symbol.toStringTag, { value: 'Module' });
+/******/ 			}
+/******/ 			Object.defineProperty(exports, '__esModule', { value: true });
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/************************************************************************/
+var __webpack_exports__ = {};
+// ESM COMPAT FLAG
+__webpack_require__.r(__webpack_exports__);
+
+// EXPORTS
+__webpack_require__.d(__webpack_exports__, {
+  "RunEnv": () => (/* binding */ RunEnv),
+  "default": () => (/* binding */ dist)
+});
+
+;// CONCATENATED MODULE: external "prop-types"
+const external_prop_types_namespaceObject = require("prop-types");
+var external_prop_types_default = /*#__PURE__*/__webpack_require__.n(external_prop_types_namespaceObject);
+;// CONCATENATED MODULE: ./dist/Env/index.js
+let isProduction = () => true;
+
+function initEnv(option) {
+  isProduction = () => {
+    return option.env === 'production';
+  };
+}
+
+
+;// CONCATENATED MODULE: ./dist/Error/index.js
+class ValidatorError extends Error {
+  struct = {
+    propsName: "",
+    value: undefined,
+    expectedType: "",
+    preciseType: ""
+  };
+  name = 'ValidatorError';
+  propsName;
+  info;
+  value;
+
+  constructor(msg, propsName, info, value) {
+    super(msg);
+    this.propsName = propsName;
+    this.info = info;
+    this.value = value;
+  }
+
+  toString() {
+    let struct;
+
+    if (this.info instanceof ObjectValidatorError || this.info instanceof ValidatorError) {
+      this.struct = {
+        propsName: this.info.propsName,
+        value: '',
+        expectedType: '',
+        preciseType: ''
+      };
+      return this.info.toString();
+    } else if (this.info instanceof Error) {
+      // eslint-disable-next-line no-useless-escape
+      const data = this.info.message.match(/(?<=(`))([\[\]\w<>\d\.]+)(?=(`))/g);
+
+      if (data) {
+        const [propsName, preciseType, value, expectedType] = data;
+        struct = {
+          propsName,
+          value,
+          expectedType,
+          preciseType
+        };
+      } else {
+        //this.info.message 
+        return this.info.message; // struct = { propsName: 'ValidatorError 解析值错误', value: '', expectedType: '', preciseType: '' }
+      }
+    } else {
+      struct = this.info;
+    }
+
+    this.struct = struct;
+    const {
+      propsName,
+      value,
+      expectedType,
+      preciseType
+    } = struct; //this.value ??
+
+    return `属性:[${propsName}]的值等于['${value}'],期待为 ${expectedType} 类型/值，实际类型/值： ${preciseType} .`;
+  }
+
+}
+
+class ObjectValidatorError extends Error {
+  name = 'ObjectValidatorError';
+  source = [];
+  propsName;
+
+  constructor(msg, propsName, error) {
+    super(msg);
+    this.source = error;
+    this.propsName = propsName;
+  }
+
+  toString() {
+    // let result = `{${new Array(this.source.length).fill(0).map((_) => '"$$":"$$"').join(',')}}`;
+    const result = {};
+    this.source.forEach(item => {
+      const info = item.toString();
+      const {
+        struct: {
+          propsName
+        }
+      } = item; // result = result.replace(`$$`, propName);
+      // result = result.replace(`$$`, info);
+
+      result[propsName] = info;
+    });
+    return result;
+  }
+
+}
+
+function flattenError(objectError) {
+  const result = {};
+  Object.keys(objectError).forEach(key => {
+    let value = objectError[key];
+    if (!!value === false) return;
+
+    if (!(value instanceof ObjectValidatorError)) {
+      value = value instanceof ValidatorError ? value : new ValidatorError(`${key} 验证失败`, key, value);
+    }
+
+    result[key] = value.toString();
+  });
+  return JSON.stringify(result, null, 2);
+}
+
+function showDifferenceTable(typeSpecs, value, objectError) {// console.log('object-validator:', error, value);
+  // const v_key = Object.keys(value);
+  // var languages = {
+  //   csharp: { name: "C#", paradigm: "object-oriented" },
+  //   fsharp: { name: "F#", paradigm: "functional" }
+  // };
+}
+
+
+;// CONCATENATED MODULE: ./dist/util.js
+
+
+const toTypeString = Function.call.bind(Object.prototype.toString);
+const ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
+const validatorSymbol = Symbol.for('validatorDisplayName');
+const has = Function.call.bind(Object.prototype.hasOwnProperty);
+
+function isSymbol(propType, propValue) {
+  if (propType === 'symbol') return true;
+  if (!propValue) return false;
+  if (propValue['@@toStringTag'] === 'Symbol') return true;
+  if (typeof Symbol === 'function' && propValue instanceof Symbol) return true;
+  return false;
+}
+
+function getPreciseType(propValue) {
+  if (typeof propValue === 'undefined' || propValue === null) {
+    return '' + propValue;
+  }
+
+  const propType = getPropType(propValue);
+
+  if (propType === 'object') {
+    if (propValue instanceof Date) {
+      return 'date';
+    } else if (propValue instanceof RegExp) {
+      return 'regexp';
+    }
+  }
+
+  return propType;
+}
+
+function getPropType(propValue) {
+  const propType = typeof propValue;
+  if (Array.isArray(propValue)) return 'array';
+  if (propValue instanceof RegExp) return 'object';
+  if (isSymbol(propType, propValue)) return 'symbol';
+  return propType;
+}
+
+function createChainableTypeChecker(validate) {
+  function checkType(isRequired, props, propName, c, l, propFullName) {
+    propFullName = propFullName || propName;
+
+    if (props[propName] == null) {
+      if (isRequired) {
+        return wrapperError(propName, props[propName], '非空', 'null/undefined');
+      }
+
+      return null;
+    } else {
+      return validate(props, propName, c, l, propFullName);
+    }
+  }
+
+  const chainedCheckType = checkType.bind(null, false);
+  chainedCheckType.isRequired = checkType.bind(null, true);
+  return chainedCheckType;
+}
+
+function wrapperError(propsName, value, expectedType, preciseType) {
+  return new ValidatorError(`${propsName} 验证失败`, propsName, {
+    propsName,
+    value,
+    expectedType,
+    preciseType
+  });
+}
+/***
+ * 验证属性类型 是否为给定的值
+ * createExpectedTypeChecker('[object Array]')
+ */
+
+
+function createExpectedTypeChecker(expectedType) {
+  function validate(props, propName) {
+    const propValue = props[propName];
+    const propType = toTypeString(propValue);
+
+    if (propType !== expectedType) {
+      const preciseType = getPreciseType(propValue);
+      return wrapperError(propName, propValue, expectedType, preciseType);
+    }
+
+    return null;
+  }
+
+  return createChainableTypeChecker(validate);
+}
+
+function checkPropTypes(typeSpecs, values, showDifference = true) {
+  if (isProduction()) return null;
+  let objectError = {};
+  let error = null;
+
+  for (const typeSpecName in typeSpecs) {
+    if (typeSpecName === '__tag') continue;
+
+    if (has(typeSpecs, typeSpecName)) {
+      try {
+        if (typeof typeSpecs[typeSpecName] !== 'function') {
+          const err = Error('验证函数类型错误');
+          err.name = 'Invariant Violation';
+          throw err;
+        }
+
+        error = typeSpecs[typeSpecName](values, typeSpecName, '', '', null, ReactPropTypesSecret);
+        objectError[typeSpecName] = !!error === false || error instanceof ObjectValidatorError ? error : new ValidatorError(`${typeSpecName} 验证失败`, typeSpecName, error, values[typeSpecName]);
+      } catch (ex) {
+        objectError = ex;
+        break;
+      }
+    }
+  }
+
+  if (Object.values(objectError).filter($1 => !!$1 === true).length > 0) {
+    if (showDifference) showDifferenceTable(typeSpecs, values, objectError);
+    return new Error(flattenError(objectError));
+  }
+
+  return null;
+}
+
+function createArrayOfTypeChecker(typeChecker) {
+  function validate(props, propName, componentName, location, propFullName) {
+    const errors = [];
+    const propValue = props[propName];
+
+    if (!Array.isArray(propValue)) {
+      const propType = getPropType(propValue);
+      return wrapperError(propName, propValue, '[object Array]', propType); // return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
+    }
+
+    for (let i = 0; i < propValue.length; i++) {
+      const error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
+      error && errors.push(new ValidatorError(`${propFullName} 验证失败`, propFullName, error, propValue));
+    }
+
+    return null;
+  }
+
+  return createChainableTypeChecker(validate);
+}
+
+function createShapeTypeChecker(shapeTypes) {
+  function validate(props, propName, componentName, location, propFullName) {
+    const errors = [];
+    const propValue = props[propName];
+    const propType = getPropType(propValue);
+
+    if (propType !== 'object') {
+      return wrapperError(propName, propValue, 'object', propType);
+    }
+
+    for (const key in shapeTypes) {
+      const checker = shapeTypes[key];
+
+      if (!checker) {
+        continue;
+      }
+
+      const error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
+      error && errors.push(new ValidatorError(`${propFullName} 验证失败`, propFullName, error, propValue));
+    }
+
+    if (errors.length > 0) {
+      const objError = new ObjectValidatorError(`验证错误：${propFullName}`, propFullName, errors);
+      return objError;
+    }
+
+    return null;
+  }
+
+  return createChainableTypeChecker(validate);
+}
+
+function validatorLog(_, typeSpec, msg) {
+  !isProduction() && console.log(`Validator Error。 [typeSpec.__tag]:[${typeSpec.__tag}] =>`, msg);
+}
+
+
+;// CONCATENATED MODULE: ./dist/AutoFactory/index.js
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+/*
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-14 16:17:32
+ * @Last Modified by: zihao.zhu
+ * @Last Modified time: 2022-02-22 17:23:16
+ * @desc : 用于自动生成propsType的验证器
+ * 1:基础数据
+ * 2:数组 / 对象 / typedArray
+ * 3:函数
+ * 4:复杂对象嵌套
+ */
+
+
+const PropsPlugin = {
+  extends: [],
+  getTypeSpec: () => "{}",
+  extendsFactory: () => {}
+};
+
+const getType = value => {
+  const [_, target] = value.match(/\[object (\w+)\]/) || [];
+  return target;
+};
+
+const Wrapper = (type, topName) => [`${topName}.${type}`, `${topName}.${type}.isRequired`];
+
+function initAutoFactory(WsProps) {
+  if (!isProduction()) {
+    const DefaultOption = {
+      maxDepth: 3,
+      topName: "WsPropsType"
+    };
+    const baseSource = [null, undefined, 1, "", false, () => {}, Symbol.for(""), new Date(), /\w/, Promise.resolve()];
+    const seniorSource = [[], {}];
+    let typeArray = [];
+    const exec = {
+      option: DefaultOption
+    };
+
+    const getValidator = type => {
+      type = type.toLocaleLowerCase(); // var vaFunc = WsProps[type];
+
+      if (type === getType(toTypeString({})).toLocaleLowerCase()) type = "shape($)"; // if (!!vaFunc === false) type = 'any';
+
+      return Wrapper(type, exec.option.topName);
+    };
+
+    baseSource.forEach(item => {
+      const objStr = toTypeString(item);
+      const minType = getType(objStr);
+
+      exec[`exec${minType}`] = function (props, value, isRequire = false) {
+        var _typeArray$find;
+
+        return ((_typeArray$find = typeArray.find(item => item.type === objStr)) === null || _typeArray$find === void 0 ? void 0 : _typeArray$find.validator[Number(isRequire)]) || "";
+      };
+    });
+
+    exec.execAny = function (props, value, isRequire = false) {
+      var _typeArray$find2;
+
+      return ((_typeArray$find2 = typeArray.find(item => item.type === toTypeString(null))) === null || _typeArray$find2 === void 0 ? void 0 : _typeArray$find2.validator[Number(isRequire)]) || "";
+    };
+
+    exec.execUnknown = function (props, value, isRequire = false) {
+      const objStr = toTypeString(value);
+      const info = typeArray.find(item => item.type === objStr);
+
+      if (!!info === false) {
+        let minType = getType(objStr);
+        minType = minType.toLocaleLowerCase();
+        if (!!WsProps[minType] === true) return Wrapper(minType, exec.option.topName)[Number(isRequire)];
+      }
+
+      return exec.execAny(props, value, isRequire);
+    }; // exec.execUndefined = exec.execAny;
+    // exec.execNull = exec.execAny;
+
+
+    exec.execObject = function (props, target, isRequire = false, depth = 0, option) {
+      const objInfo = typeArray.find(item => item.type === toTypeString({})) || {};
+      if (Object.keys(target).length === 0 || depth === option.maxDepth) return Wrapper(objInfo.minType.toLocaleLowerCase(), exec.option.topName)[Number(isRequire)];
+      const result = {};
+      Object.keys(target).forEach(key => {
+        const value = target[key];
+        const func = PropsPlugin.switchExec(value, key, target);
+
+        if (func && typeof func === typeof Function) {
+          result[key] = func(props, value, isRequire, depth + 1, option);
+        }
+      });
+      if (depth === 0) return result;
+      const {
+        validator
+      } = objInfo;
+      const template = validator[Number(isRequire)];
+      return template.replace("$", JSON.stringify(result));
+    };
+
+    exec.execArray = function (props, value = [], isRequire = false, depth = 0, option) {
+      const sourceInfo = typeArray.find(item => item.type === toTypeString([])) || {};
+      if (value.length === 0 || depth === option.maxDepth) return sourceInfo.validator[Number(isRequire)];
+      const execFunc = PropsPlugin.switchExec(value[0]);
+      const validator = sourceInfo.validator[Number(false)]; //TODO:isRequire 是否直接给false
+
+      const result = `${validator}Of(${execFunc(props, value[0], false, depth + 1, option)})${isRequire ? ".isRequired" : ""}`; // const
+
+      return result;
+    };
+
+    PropsPlugin.switchExec = function switchExec(source, key, target) {
+      const type = typeArray.find(item => item.type === toTypeString(source));
+      let execFunc = null;
+      const fName = type ? `exec${type.minType}` : null;
+
+      if (fName && !!exec[fName] === true) {
+        execFunc = exec[fName];
+      } else {
+        const plugin = PropsPlugin.extends.find(item => item.test(source));
+
+        if (plugin) {
+          const {
+            choice,
+            execMap
+          } = plugin;
+          const execName = choice(source, key, target);
+          execFunc = execMap[execName] || exec[execName];
+        }
+      }
+
+      return execFunc || exec.execAny;
+    };
+
+    PropsPlugin.installType = function (source, isRequire = false) {
+      typeArray = function (target) {
+        return target.map(item => {
+          const targetType = toTypeString(item);
+          const minType = getType(targetType);
+          const validator = getValidator(minType);
+          return {
+            type: targetType,
+            minType,
+            validator
+          };
+        });
+      }([...baseSource, ...seniorSource]);
+    };
+
+    PropsPlugin.extendsFactory = function (plugin) {
+      if (!!plugin.test && typeof plugin.test === "function" && !!plugin.choice && typeof plugin.choice === "function" && !!plugin.execMap) {
+        PropsPlugin.extends.unshift(plugin);
+      }
+    };
+
+    PropsPlugin.__getID = () => {
+      const IDS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      const IDL = IDS.length;
+      let UID = "";
+
+      for (let i = 0; i < 10; i++) {
+        UID += IDS.charAt(Math.floor(Math.random() * IDL));
+      }
+
+      return UID;
+    };
+
+    PropsPlugin.getTypeSpec = function (source, isRequire = true, option = DefaultOption) {
+      option = { ...DefaultOption,
+        ...option
+      };
+      exec.option = option;
+      PropsPlugin.installType();
+      const result = PropsPlugin.switchExec(source)("", source, isRequire, 0, option);
+      typeof result === "object" && (result.__tag = `'${PropsPlugin.__getID()}'`);
+      return JSON.stringify(result, null, 2).replace(/\n/g, "").replace(/"/g, "").replace(/\\/g, "");
+    };
+
+    extendTypedArray(PropsPlugin);
+    extendBigInt(PropsPlugin);
+  }
+
+  WsProps.PropsPlugin = PropsPlugin;
+  return PropsPlugin;
+}
+
+function extendTypedArray(plugin) {
+  // 对typedArray 扩展
+  plugin.extendsFactory && plugin.extendsFactory({
+    test: source => {
+      const type = toTypeString(new ArrayBuffer(0));
+      const minType = getType(type);
+      if (source && !!source.buffer && Object.prototype.toString.call(source.buffer) === type) return true;
+      if (source && source.constructor && source.constructor.name === minType) return true;
+      return false;
+    },
+    choice: (props, propName, typeObject) => "execTypedArray",
+    execMap: {
+      execTypedArray: function (props, value, isRequire = false, depth = 0, option) {
+        const type = toTypeString(value);
+        const minType = getType(type).toLocaleLowerCase().replace("array", "");
+        return `${Wrapper(minType, option.topName)[Number(isRequire)]}`;
+      }
+    }
+  });
+}
+
+function extendBigInt(plugin) {
+  plugin.extendsFactory && plugin.extendsFactory({
+    test: source => {
+      return typeof source === typeof 1n;
+    },
+    choice: (props, propName, typeObject) => "bigint",
+    execMap: {
+      bigint: function (props, value, isRequire = false, depth = 0, option) {
+        const type = toTypeString(value);
+        const minType = getType(type).toLocaleLowerCase();
+        return `${Wrapper(minType, option.topName)[Number(isRequire)]}`;
+      }
+    }
+  });
+}
+;// CONCATENATED MODULE: ./dist/ExtendProps/DateValidator.js
+/*
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-21 14:20:58
+ * @Last Modified by:   zihao.zhu
+ * @Last Modified time: 2022-01-21 14:20:58
+ * @desc : date 验证
+ */
+
+/**
+ * date String '2021-11-11 00:00:00' 进行匹配
+ * /(\d){4}?-(\d){2}?-(\d){2}? (\d){2}?:(\d){2}?:(\d){2}?/
+ * @param regex
+ * @returns
+ */
+
+function dateValidatorCheckString(regex) {
+  function validate(props, propName) {
+    const propValue = props[propName];
+
+    if (regex && regex.test(propValue) === false) {
+      const preciseType = getPreciseType(propValue);
+      return new Error(`${JSON.stringify(props)}-[${propName}]-[${propValue}] is type ${preciseType} , but expected value is test(/^${regex}$/)`);
+    }
+
+    return null;
+  }
+
+  return createChainableTypeChecker(validate);
+}
+/**
+ * 可以被解析成日期的值
+ */
+
+const dateValidatorCheck = (check => {
+  function validate(props, propName) {
+    const propValue = props[propName];
+
+    if (check && !check(propValue)) {
+      const preciseType = getPreciseType(propValue);
+      return new Error(`${JSON.stringify(props)}-[${propName}]-[${propValue}] is type ${preciseType} , but expected value is test by Date.parse`);
+    }
+
+    return null;
+  }
+
+  return createChainableTypeChecker(validate);
+})(data => {
+  const date = Date.parse(data);
+  return typeof date === 'number' && !isNaN(date) && date > 0;
+});
+;// CONCATENATED MODULE: ./dist/ExtendProps/TypedArray.js
+/*
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-21 14:21:35
+ * @Last Modified by:   zihao.zhu
+ * @Last Modified time: 2022-01-21 14:21:35
+ * @desc : typedArray
+ */
+
+/* eslint-disable  */
+
+/* harmony default export */ const TypedArray = ({
+  buffer: createExpectedTypeChecker(toTypeString(new ArrayBuffer(0))),
+  dataview: createExpectedTypeChecker(toTypeString(new DataView(new ArrayBuffer(0)))),
+  uint8: createExpectedTypeChecker(toTypeString(new Uint8Array())),
+  uint16: createExpectedTypeChecker(toTypeString(new Uint16Array())),
+  uint32: createExpectedTypeChecker(toTypeString(new Uint32Array())),
+  int8: createExpectedTypeChecker(toTypeString(new Int8Array())),
+  int16: createExpectedTypeChecker(toTypeString(new Int16Array())),
+  int32: createExpectedTypeChecker(toTypeString(new Int32Array())),
+  float32: createExpectedTypeChecker(toTypeString(new Float32Array())),
+  float64: createExpectedTypeChecker(toTypeString(new Float64Array())),
+  uint8clamped: createExpectedTypeChecker(toTypeString(new Uint8ClampedArray()))
+});
+;// CONCATENATED MODULE: ./dist/ExtendProps/Nullly.js
+/*
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-21 14:21:10
+ * @Last Modified by:   zihao.zhu
+ * @Last Modified time: 2022-01-21 14:21:10
+ * @desc : undefined / null
+ */
+
+/* eslint-disable */
+
+
+function createNullUndefinedTypeChecker(validate) {
+  function checkType(isRequired, props, propName) {
+    const value = props[propName];
+
+    if (value === null || value === undefined) {
+      return validate(props, propName);
+    } else {
+      if (isRequired) {
+        return new Error(`The \`${propName}\` is null/Undefined as required , but its value is ${toTypeString(value)}`);
+      }
+
+      return null;
+    }
+  }
+
+  const chainedCheckType = checkType.bind(null, false);
+  chainedCheckType.isRequired = checkType.bind(null, true);
+  return chainedCheckType;
+}
+
+function Nullly_createExpectedTypeChecker(expectedType) {
+  function validate(props, propName) {
+    const propValue = props[propName];
+    const propType = toTypeString(propValue);
+
+    if (propType !== expectedType) {
+      const preciseType = getPreciseType(propValue);
+      return new Error(`Invalid ${propName} value is ${propValue} ,but expected ${expectedType} but get ${preciseType}`);
+    }
+
+    return null;
+  }
+
+  return createNullUndefinedTypeChecker(validate);
+}
+
+/* harmony default export */ const Nullly = ({
+  null: Nullly_createExpectedTypeChecker(toTypeString(null)),
+  undefined: Nullly_createExpectedTypeChecker(toTypeString(undefined))
+});
+;// CONCATENATED MODULE: ./dist/ExtendProps/Promise.js
+/*
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-21 14:21:29
+ * @Last Modified by:   zihao.zhu
+ * @Last Modified time: 2022-01-21 14:21:29
+ * @desc : promise
+ */
+
+/* eslint-disable */
+
+/* harmony default export */ const ExtendProps_Promise = ({
+  promise: createExpectedTypeChecker(toTypeString(new Promise(() => {})))
+});
+;// CONCATENATED MODULE: ./dist/ExtendProps/index.js
+/* eslint-disable  */
+
+
+
+
+/* harmony default export */ const ExtendProps = ({
+  dateString: dateValidatorCheckString(/(\d){4}?-(\d){2}?-(\d){2}? (\d){2}?:(\d){2}?:(\d){2}?/),
+  date: dateValidatorCheck,
+  ...TypedArray,
+  ...Nullly,
+  ...ExtendProps_Promise
+});
+;// CONCATENATED MODULE: ./dist/UtilExtends/Promise.js
+/*
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-21 14:20:23
+ * @Last Modified by: zihao.zhu
+ * @Last Modified time: 2022-01-21 16:54:32
+ * @desc : Promise 验证
+ */
+
+/* eslint-disable no-extra-boolean-cast */
+
+
+
+
+(function (prototype) {
+  if (!!prototype.validator) return;
+
+  prototype.validator = function (typeSpec, handle) {
+    if (!isProduction()) {
+      const nextHandle = source => {
+        const result = !!handle ? handle(source) : source;
+        const error = checkPropTypes(typeSpec, result);
+
+        if (typeof source === 'object' && source !== null) {
+          Object.defineProperty(source, '__props__error', {
+            configurable: false,
+            enumerable: false,
+            get: () => error
+          });
+        }
+
+        error && validatorLog && validatorLog(source, typeSpec, error);
+        return source;
+      };
+
+      return this.then(nextHandle);
+    }
+
+    return this.then(data => data);
+  };
+})((window || undefined).Promise.prototype);
+;// CONCATENATED MODULE: ./dist/UtilExtends/WrapperApi.js
+
+function WrapperApi(Api, spec) {
+  if (isProduction()) Api;
+
+  const createProxy = (api, specSource) => {
+    Object.keys(api).forEach(key => {
+      const target = api[key];
+
+      if (typeof target === 'object') {
+        let spec = specSource && specSource[key];
+        if (typeof spec !== 'object') spec = {};
+        api[key] = createProxy(target, spec);
+      }
+    });
+    return new Proxy(api, {
+      get(target, key) {
+        const source = target[key];
+
+        if (typeof source === 'function') {
+          const spec = specSource && specSource[key] || {};
+          return (...args) => {
+            return source(...args).validator(spec.spec, spec.handler);
+          };
+        }
+
+        return target[key];
+      }
+
+    });
+  };
+
+  return createProxy(Api, spec); // const keys = Object.keys(Api);
+  // const newApi = {};
+  // keys.forEach((key) => {
+  //   const module = Api[key];
+  //   const moduleSpec = SpecSpace.default[key];
+  //   newApi[key] = new Proxy(module, {
+  //     get(target, propKey) {
+  //       const exec = target[propKey];
+  //       const spec = moduleSpec[propKey as string];
+  //       if (typeof exec === 'function' && typeof spec === 'object') {
+  //         return (...args) => {
+  //           return (exec(...args) as PromiseExtends<any>).validator(spec.spec, spec.handler);
+  //         }
+  //       }
+  //       return exec;
+  //     }
+  //   })
+  // })
+  // return newApi;
+}
+;// CONCATENATED MODULE: ./dist/UtilExtends/index.js
+
+
+
+;// CONCATENATED MODULE: ./dist/index.js
+/*
+ * @Author: zihao.zhu@united-imaging.com
+ * @Date: 2022-01-21 14:19:46
+ * @Last Modified by: zihao.zhu
+ * @Last Modified time: 2022-02-22 16:08:41
+ * @desc : 类型声明和验证
+ */
+
+/* eslint-disable @typescript-eslint/no-redeclare */
+
+
+
+
+
+
+var RunEnv;
+
+(function (RunEnv) {
+  RunEnv["dev"] = "development";
+  RunEnv["prod"] = "production";
+})(RunEnv || (RunEnv = {}));
+
+const WsPropsType = {
+  env: RunEnv.dev
+};
+
+function initValidator(source) {
+  if (!Array.isArray(source)) source = [source];
+  source.forEach(item => Object.getOwnPropertyNames(item).forEach(key => {
+    const target = item[key];
+    target[validatorSymbol] = key;
+    WsPropsType[key] = target;
+  }));
+}
+
+function extendsValidator(name, validator) {
+  WsPropsType[name] = createChainableTypeChecker(validator);
+}
+
+initValidator([(external_prop_types_default()), ExtendProps, {
+  checkPropTypes: checkPropTypes,
+  boolean: (external_prop_types_default()).bool,
+  function: (external_prop_types_default()).func,
+  shape: createShapeTypeChecker,
+  arrayOf: createArrayOfTypeChecker // exact: createStrictShapeTypeChecker,
+
+}, {
+  extendsValidator,
+  util: {
+    createChainableTypeChecker: createChainableTypeChecker,
+    createExpectedTypeChecker: createExpectedTypeChecker,
+    validatorLog: validatorLog
+  },
+  apiUtil: {
+    WrapperApi: WrapperApi
+  },
+  setEnv: env => {
+    WsPropsType.env = env;
+  } // PropsPlugin,
+
+}]);
+initEnv(WsPropsType);
+initAutoFactory(WsPropsType);
+/* harmony default export */ const dist = (WsPropsType);
+/******/ 	return __webpack_exports__;
+/******/ })()
+;
+});
+//# sourceMappingURL=index.js.map
