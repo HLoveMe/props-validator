@@ -3,7 +3,7 @@
  * @Author: zihao.zhu@united-imaging.com 
  * @Date: 2022-01-14 16:17:32 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-02-22 09:16:39
+ * @Last Modified time: 2022-02-22 15:41:24
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
@@ -45,7 +45,7 @@ const Wrapper = (type: string, topName: string): Array<string> => [`${topName}.$
 export default function initAutoFactory(WsProps: any) {
   if (!isProduction()) {
     // const PropsPlugin = ((globalThis || window) as any).PropsPlugin;
-    const DefaultOption = { maxDepth: 3, topName: 'WsPropsType' }
+    const DefaultOption = { maxDepth: 3, topName: 'PropsValidator' }
     const baseSource = [null, undefined, 1, '', false, () => { }, Symbol.for(''), new Date(), /\w/, Promise.resolve()];
     const seniorSource = [[], {},]
     let typeArray: Array<TypeObject> = [];

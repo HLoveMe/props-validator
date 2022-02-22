@@ -13,7 +13,7 @@
     "allowSyntheticDefaultImports": true,
     "sourceMap": false,
     "baseUrl": ".",
-    "outDir": "./cjs/dev",
+    "outDir": "./dist",
   },
   "include": [
     "src/**/*.ts",
