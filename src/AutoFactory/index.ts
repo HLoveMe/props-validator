@@ -3,7 +3,7 @@
  * @Author: zihao.zhu@united-imaging.com 
  * @Date: 2022-01-14 16:17:32 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-02-22 15:41:24
+ * @Last Modified time: 2022-02-22 16:08:41
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
@@ -36,7 +36,6 @@ const PropsPlugin: any = {
   getTypeSpec: () => '{}',
   extendsFactory: () => { },
 };
-// ((globalThis || window) as any).PropsPlugin = PropsPlugin;
 
 const getType = (value: string) => { const [a, target] = value.match(/\[object (\w+)\]/) ?? []; return target }
 
@@ -44,8 +43,8 @@ const Wrapper = (type: string, topName: string): Array<string> => [`${topName}.$
 
 export default function initAutoFactory(WsProps: any) {
   if (!isProduction()) {
-    // const PropsPlugin = ((globalThis || window) as any).PropsPlugin;
-    const DefaultOption = { maxDepth: 3, topName: 'PropsValidator' }
+
+    const DefaultOption = { maxDepth: 3, topName: 'WsPropsType' }
     const baseSource = [null, undefined, 1, '', false, () => { }, Symbol.for(''), new Date(), /\w/, Promise.resolve()];
     const seniorSource = [[], {},]
     let typeArray: Array<TypeObject> = [];
@@ -140,7 +139,7 @@ export default function initAutoFactory(WsProps: any) {
 
     PropsPlugin.extendsFactory = function (plugin: PluginExec) {
       if (!!plugin.test && typeof plugin.test === 'function' && !!plugin.choice && typeof plugin.choice === 'function' && !!plugin.execMap) {
-        PropsPlugin.extends.unshift(plugin)
+        PropsPlugin.extends.unshift(plugin);
       }
     }
     PropsPlugin.__getID = () => {
@@ -193,7 +192,7 @@ function extendTypedArray(plugin: typeof PropsPlugin) {
 function extendBigInt(plugin: typeof PropsPlugin) {
   plugin.extendsFactory && plugin.extendsFactory({
     test: (source: any) => {
-      return typeof source === typeof BigInt(1);
+      return typeof source === typeof 1n;
     },
     choice: (props: any, propName: string, typeObject: TypeObject): string => 'bigint',
     execMap: {
