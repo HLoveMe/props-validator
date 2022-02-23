@@ -149,7 +149,7 @@
     })
     
     // 扩展 自动生成验证对象函数
-    PropsPlugin.extendsFactory(()=>{
+    PropsPlugin.extendsFactory({
         test:(source: any)=>{
         	return Object.prototype.toString.call(source)==='[object Engin]';
         },
