@@ -3,6 +3,8 @@
 
 * [Prop-Types-链接](https://github.com/facebook/prop-types)
 
+* 安装 npm i  https://github.com/HLoveMe/props-validator.git
+
 * 支持的类型 验证
 
   ```js
