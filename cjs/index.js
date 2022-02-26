@@ -1,17 +1,49 @@
 (function webpackUniversalModuleDefinition(root, factory) {
 	if(typeof exports === 'object' && typeof module === 'object')
-		module.exports = factory();
+		module.exports = factory(require("prop-types"));
 	else if(typeof define === 'function' && define.amd)
 		define([], factory);
 	else if(typeof exports === 'object')
-		exports["PropsValidator"] = factory();
+		exports["PropsValidator"] = factory(require("prop-types"));
 	else
-		root["PropsValidator"] = factory();
-})(self, function() {
+		root["PropsValidator"] = factory(root[undefined]);
+})(self, function(__WEBPACK_EXTERNAL_MODULE__73__) {
 return /******/ (() => { // webpackBootstrap
 /******/ 	"use strict";
-/******/ 	// The require scope
-/******/ 	var __webpack_require__ = {};
+/******/ 	var __webpack_modules__ = ({
+
+/***/ 73:
+/***/ ((module) => {
+
+module.exports = __WEBPACK_EXTERNAL_MODULE__73__;
+
+/***/ })
+
+/******/ 	});
+/************************************************************************/
+/******/ 	// The module cache
+/******/ 	var __webpack_module_cache__ = {};
+/******/ 	
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/ 		// Check if module is in cache
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = __webpack_module_cache__[moduleId] = {
+/******/ 			// no module.id needed
+/******/ 			// no module.loaded needed
+/******/ 			exports: {}
+/******/ 		};
+/******/ 	
+/******/ 		// Execute the module function
+/******/ 		__webpack_modules__[moduleId](module, module.exports, __webpack_require__);
+/******/ 	
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
 /******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
@@ -56,6 +88,8 @@ return /******/ (() => { // webpackBootstrap
 /******/ 	
 /************************************************************************/
 var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be isolated against other modules in the chunk.
+(() => {
 // ESM COMPAT FLAG
 __webpack_require__.r(__webpack_exports__);
 
@@ -65,9 +99,9 @@ __webpack_require__.d(__webpack_exports__, {
   "default": () => (/* binding */ dist)
 });
 
-;// CONCATENATED MODULE: external "prop-types"
-const external_prop_types_namespaceObject = require("prop-types");
-var external_prop_types_default = /*#__PURE__*/__webpack_require__.n(external_prop_types_namespaceObject);
+// EXTERNAL MODULE: external {"commonjs":"prop-types","commonjs2":"prop-types"}
+var external_commonjs_prop_types_commonjs2_prop_types_ = __webpack_require__(73);
+var external_commonjs_prop_types_commonjs2_prop_types_default = /*#__PURE__*/__webpack_require__.n(external_commonjs_prop_types_commonjs2_prop_types_);
 ;// CONCATENATED MODULE: ./dist/Env/index.js
 var isProduction = function isProduction() {
   return true;
@@ -1052,10 +1086,10 @@ function extendsValidator(name, validator) {
   WsPropsType[name] = createChainableTypeChecker(validator);
 }
 
-initValidator([(external_prop_types_default()), ExtendProps, {
+initValidator([(external_commonjs_prop_types_commonjs2_prop_types_default()), ExtendProps, {
   checkPropTypes: checkPropTypes,
-  "boolean": (external_prop_types_default()).bool,
-  "function": (external_prop_types_default()).func,
+  "boolean": (external_commonjs_prop_types_commonjs2_prop_types_default()).bool,
+  "function": (external_commonjs_prop_types_commonjs2_prop_types_default()).func,
   shape: createShapeTypeChecker,
   arrayOf: createArrayOfTypeChecker // exact: createStrictShapeTypeChecker,
 
@@ -1077,6 +1111,8 @@ initValidator([(external_prop_types_default()), ExtendProps, {
 initEnv(WsPropsType);
 initAutoFactory(WsPropsType);
 /* harmony default export */ const dist = (WsPropsType);
+})();
+
 /******/ 	return __webpack_exports__;
 /******/ })()
 ;

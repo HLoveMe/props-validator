@@ -25,13 +25,15 @@ module.exports = {
           "plugins": [
             ["@babel/plugin-proposal-optional-chaining"],
           ],
-          presets:["@babel/preset-env"]
+          presets: ["@babel/preset-env"]
         }
       },
     },]
   },
   externals: {
-    'prop-types': 'commonjs2 prop-types', // 源码中 commonjs 方式 加载prop-types。 打包后 不会包含prop-types 源码
+    commonjs: 'prop-types',
+    commonjs2: 'prop-types'
+    // 源码中 commonjs 方式 加载prop-types。 打包后 不会包含prop-types 源码
   },
   plugins: [],
   resolve: {
