@@ -26,7 +26,8 @@ module.exports = {
         options: {
           "plugins": [
             ["@babel/plugin-proposal-optional-chaining"],
-          ]
+          ],
+          presets:["@babel/preset-env"]
         }
       },
     },]
@@ -38,7 +39,7 @@ module.exports = {
   resolve: {
     extensions: ['.json', '.js', '.jsx']
   },
-  devtool: 'cheap-module-source-map',
+  // devtool: 'cheap-module-source-map',
   optimization: {
     minimize: true,
     minimizer: [
