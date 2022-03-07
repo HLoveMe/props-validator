@@ -117,7 +117,7 @@
       __tag:''
       data:HL.arrayOf(HL.number),
       data2:HL.arrayOf(HL.date),
-      people:WsPropsType.exact({
+      people:HL.exact({
           a:HL.string.isRequired,
           b:HL.null.isRequired
           c:HL.arrayOf(HL.number).isRequired,
@@ -221,12 +221,11 @@
   	await Apiserver.getA()
   new : 
   	import WsPropsType from '..';
-  	const PropsPlugin = WsPropsType.PropsPlugin;
-  	const NewApiserver = PropsPlugin.api.WrapperApi(Apiserver,ApiSpec)
+  	const NewApiserver = WsPropsType.apiUtil.WrapperApi(Apiserver,ApiSpec)
       // 会对返回数据进行校验。仅仅输出校验结果。不影响其他流程。
       await NewApiserver.getA()
   ```
-
+  
 * 格式验证错误详细
 
   ```javascript
