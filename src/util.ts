@@ -2,7 +2,7 @@
  * @Author: zihao.zhu@united-imaging.com 
  * @Date: 2022-01-21 14:20:05 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-01-21 16:53:49
+ * @Last Modified time: 2022-03-09 15:05:19
  * @desc : 工具类 包装 
  */
 import PropTypes from 'prop-types';
@@ -167,7 +167,6 @@ function validatorLog(_: any, typeSpec: TypeSpecSpace, msg: Error) {
 }
 
 export {
-  validatorSymbol,
   toTypeString,
   getPropType,
   getPreciseType,

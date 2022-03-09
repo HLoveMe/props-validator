@@ -781,6 +781,8 @@ function extendBigInt(plugin) {
     }
   });
 }
+;// CONCATENATED MODULE: ./dist/DefaultValue/index.js
+function initDefaultValue(ws) {}
 ;// CONCATENATED MODULE: ./dist/ExtendProps/DateValidator.js
 /*
  * @Author: zihao.zhu@united-imaging.com
@@ -1049,11 +1051,12 @@ function WrapperApi(Api, spec) {
  * @Author: zihao.zhu@united-imaging.com
  * @Date: 2022-01-21 14:19:46
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-02-22 16:08:41
+ * @Last Modified time: 2022-03-09 15:08:11
  * @desc : 类型声明和验证
  */
 
 /* eslint-disable @typescript-eslint/no-redeclare */
+
 
 
 
@@ -1076,7 +1079,6 @@ function initValidator(source) {
   source.forEach(function (item) {
     return Object.getOwnPropertyNames(item).forEach(function (key) {
       var target = item[key];
-      target[validatorSymbol] = key;
       WsPropsType[key] = target;
     });
   });
@@ -1110,6 +1112,7 @@ initValidator([(external_commonjs_prop_types_commonjs2_prop_types_default()), Ex
 }]);
 initEnv(WsPropsType);
 initAutoFactory(WsPropsType);
+initDefaultValue(WsPropsType);
 /* harmony default export */ const dist = (WsPropsType);
 })();
 

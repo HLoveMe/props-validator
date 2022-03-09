@@ -4,7 +4,8 @@
   "description": "Props Validator",
   "main": "index.js",
   "scripts": {
-    "test": "tsc && webpack --config webpack.config.test.js",
+    "tsc": "tsc --watch",
+    "dev": "webpack --config webpack.config.dev.js",
     "build": "tsc && webpack --config webpack.config.js"
   },
   "author": "",

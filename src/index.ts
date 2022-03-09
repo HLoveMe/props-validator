@@ -2,7 +2,7 @@
  * @Author: zihao.zhu@united-imaging.com
  * @Date: 2022-01-21 14:19:46
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-02-22 16:08:41
+ * @Last Modified time: 2022-03-09 15:08:11
  * @desc : 类型声明和验证
  */
 /* eslint-disable @typescript-eslint/no-redeclare */
@@ -13,6 +13,7 @@ import PropTypes, {
   ReactNodeLike,
 } from "prop-types";
 import initAutoFactory, { FactoryOption, PluginExec } from "./AutoFactory";
+import initDefaultValue from "./DefaultValue";
 import { initEnv } from "./Env";
 import ExtendsValidator from "./ExtendProps";
 import {
@@ -20,7 +21,6 @@ import {
   checkPropTypes,
   createExpectedTypeChecker,
   validatorLog,
-  validatorSymbol,
   createShapeTypeChecker,
   createArrayOfTypeChecker,
 } from "./util";
@@ -213,7 +213,6 @@ function initValidator(source: any) {
   source.forEach((item: any) =>
     Object.getOwnPropertyNames(item).forEach((key) => {
       const target = item[key];
-      target[validatorSymbol] = key;
       (WsPropsType as any)[key] = target;
     })
   );
@@ -250,4 +249,5 @@ initValidator([
 ]);
 initEnv(WsPropsType);
 initAutoFactory(WsPropsType);
+initDefaultValue(WsPropsType);
 export default WsPropsType;
