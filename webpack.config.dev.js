@@ -3,8 +3,7 @@ const TerserPlugin = require("terser-webpack-plugin");
 module.exports = {
   mode: "production",
   entry: {
-    index: path.join(__dirname, "dist", "index.js"),
-    "index.min": path.join(__dirname, "dist", "index.js"),
+    index: path.join(__dirname, "src", "index.ts"),
   },
   watch: true,
   output: {
@@ -15,18 +14,22 @@ module.exports = {
     library: "PropsValidator",
   },
   module: {
-    rules: [
-      {
-        test: /\.(js|jsx)$/,
-        exclude: /(node_modules|bower_components|build)/,
-        use: {
-          loader: "babel-loader",
-          options: {
-            plugins: [["@babel/plugin-proposal-optional-chaining"]],
-            presets: ["@babel/preset-env"],
-          },
+    rules: [{
+      test: /\.ts$/,
+      exclude: /node_modules/,
+      use: ['ts-loader']
+    },
+    {
+      test: /\.(js|jsx)$/,
+      exclude: /(node_modules|bower_components|build)/,
+      use: {
+        loader: "babel-loader",
+        options: {
+          plugins: [["@babel/plugin-proposal-optional-chaining"]],
+          presets: ["@babel/preset-env"],
         },
       },
+    },
     ],
   },
   externals: {
@@ -36,7 +39,7 @@ module.exports = {
   },
   plugins: [],
   resolve: {
-    extensions: [".json", ".js", ".jsx"],
+    extensions: [".json", ".js", ".jsx", ".ts", ".tsx"],
   },
   devtool: "cheap-module-source-map",
   optimization: {
