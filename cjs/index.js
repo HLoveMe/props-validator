@@ -366,7 +366,7 @@ function validatorLog(_, typeSpec, msg) {
 ;// CONCATENATED MODULE: ./src/AutoFactory/index.ts
 /* eslint-disable @typescript-eslint/no-unused-vars */
 /*
- * @Author: zihao.zhu@united-imaging.com
+ * @Author: zihao.zhu@github.com
  * @Date: 2022-01-14 16:17:32
  * @Last Modified by: zihao.zhu
  * @Last Modified time: 2022-02-22 17:23:16
@@ -583,7 +583,7 @@ function initDefaultValue(ws) { }
 
 ;// CONCATENATED MODULE: ./src/ExtendProps/DateValidator.ts
 /*
- * @Author: zihao.zhu@united-imaging.com
+ * @Author: zihao.zhu@github.com
  * @Date: 2022-01-21 14:20:58
  * @Last Modified by:   zihao.zhu
  * @Last Modified time: 2022-01-21 14:20:58
@@ -627,7 +627,7 @@ const dateValidatorCheck = ((check) => {
 
 ;// CONCATENATED MODULE: ./src/ExtendProps/TypedArray.ts
 /*
- * @Author: zihao.zhu@united-imaging.com
+ * @Author: zihao.zhu@github.com
  * @Date: 2022-01-21 14:21:35
  * @Last Modified by:   zihao.zhu
  * @Last Modified time: 2022-01-21 14:21:35
@@ -651,7 +651,7 @@ const dateValidatorCheck = ((check) => {
 
 ;// CONCATENATED MODULE: ./src/ExtendProps/Nullly.ts
 /*
- * @Author: zihao.zhu@united-imaging.com
+ * @Author: zihao.zhu@github.com
  * @Date: 2022-01-21 14:21:10
  * @Last Modified by:   zihao.zhu
  * @Last Modified time: 2022-01-21 14:21:10
@@ -695,7 +695,7 @@ function Nullly_createExpectedTypeChecker(expectedType) {
 
 ;// CONCATENATED MODULE: ./src/ExtendProps/Promise.ts
 /*
- * @Author: zihao.zhu@united-imaging.com
+ * @Author: zihao.zhu@github.com
  * @Date: 2022-01-21 14:21:29
  * @Last Modified by:   zihao.zhu
  * @Last Modified time: 2022-01-21 14:21:29
@@ -723,7 +723,7 @@ function Nullly_createExpectedTypeChecker(expectedType) {
 
 ;// CONCATENATED MODULE: ./src/UtilExtends/Promise.ts
 /*
- * @Author: zihao.zhu@united-imaging.com
+ * @Author: zihao.zhu@github.com
  * @Date: 2022-01-21 14:20:23
  * @Last Modified by: zihao.zhu
  * @Last Modified time: 2022-01-21 16:54:32
@@ -814,7 +814,7 @@ function WrapperApi(Api, spec) {
 
 ;// CONCATENATED MODULE: ./src/index.ts
 /*
- * @Author: zihao.zhu@united-imaging.com
+ * @Author: zihao.zhu@github.com
  * @Date: 2022-01-21 14:19:46
  * @Last Modified by: zihao.zhu
  * @Last Modified time: 2022-03-09 15:08:11
