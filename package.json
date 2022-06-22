@@ -13,6 +13,11 @@
     "@types/prop-types": "^15.7.4",
     "prop-types": "^15.8.1"
   },
+  "files":{
+    "cjs",
+    "index.js",
+    "index.d.ts"
+  },
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
