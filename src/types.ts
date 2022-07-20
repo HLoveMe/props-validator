@@ -2,7 +2,7 @@
  * @Author: zihao.zhu@github.com
  * @Date: 2022-01-21 14:19:46
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-03-09 15:08:11
+ * @Last Modified time: 2022-07-20 09:55:05
  * @desc : 类型声明和验证
  */
 /* eslint-disable @typescript-eslint/no-redeclare */
@@ -12,28 +12,17 @@ import PropTypes, {
   ReactElementLike,
   ReactNodeLike,
 } from "prop-types";
-import initAutoFactory, { FactoryOption, PluginExec } from "./AutoFactory";
-import initDefaultValue from "./DefaultValue";
-import { initEnv } from "./Env";
-import ExtendsValidator from "./ExtendProps";
-import {
-  createChainableTypeChecker,
-  checkPropTypes,
-  createExpectedTypeChecker,
-  validatorLog,
-  createShapeTypeChecker,
-  createArrayOfTypeChecker,
-} from "./util";
-import { WrapperApi } from "./UtilExtends/index";
+import { FactoryOption, PluginExec } from "./AutoFactory";
 
-declare type ErrorAble = null | Error | any;
-declare type ShowIDString = string;
-declare type DateString = string;
-declare type DateStamp = number;
-declare type ValidatorFunction = (props: any, propName: string) => ErrorAble;
-declare type ValidatorSource = any;
 
-interface ValidatorData extends Object {
+export declare  type ErrorAble = null | Error;
+export declare  type ShowIDString = string;
+export declare  type DateString = string;
+export declare  type DateStamp = number;
+export declare  type ValidatorFunction = (props: any, propName: string) => ErrorAble;
+export declare  type ValidatorSource = any;
+
+export declare interface ValidatorData extends Object {
   __props__error: ErrorAble;
 }
 export declare interface PromiseExtends<T> extends Promise<T> {
@@ -45,12 +34,10 @@ export declare interface PromiseExtends<T> extends Promise<T> {
     handle?: (source: any) => ValidatorSource
   ): PromiseExtends<ValidatorData /***Proxy*/>;
 }
-export enum RunEnv {
-  dev = "development",
-  prod = "production",
-}
 
-declare interface Util {
+export type RunEnv = 'development' | 'production'
+
+export declare  interface Util {
   createChainableTypeChecker: (
     validator: Function
   ) => PropTypes.Requireable<any>;
@@ -64,7 +51,7 @@ declare interface APISource {
   [key: string]: AsyncFunction | APISource;
 }
 
-interface SpecAtom {
+export declare interface SpecAtom {
   spec: TypeSpecSpace;
   handler: ((source: any) => any) | null | undefined;
 }
@@ -185,13 +172,11 @@ export interface WsType {
   apiUtil: ApiUtil;
 }
 
-const WsPropsType: WsType = { env: RunEnv.dev } as unknown as WsType;
-
-declare type instanceOfValue = ReturnType<WsType["instanceOf"]>;
-declare type oneOfTypeValue = ReturnType<WsType["oneOfType"]>;
-declare type shapeValue = ReturnType<WsType["shape"]>;
-declare type exactValue = ReturnType<WsType["exact"]>;
-declare type SpecValue =
+export declare  type instanceOfValue = ReturnType<WsType["instanceOf"]>;
+export declare  type oneOfTypeValue = ReturnType<WsType["oneOfType"]>;
+export declare  type shapeValue = ReturnType<WsType["shape"]>;
+export declare  type exactValue = ReturnType<WsType["exact"]>;
+export declare type SpecValue =
   | PropTypes.Requireable<any>
   | PropTypes.Validator<any>
   | ValidatorFunction
@@ -199,7 +184,8 @@ declare type SpecValue =
   | oneOfTypeValue
   | shapeValue
   | exactValue
-  | ShowIDString;
+  | ShowIDString
+  | Function;
 
 export interface TypeSpecSpaceTag {
   __tag: ShowIDString;
@@ -207,47 +193,3 @@ export interface TypeSpecSpaceTag {
 export interface TypeSpecSpace extends TypeSpecSpaceTag {
   [key: string]: SpecValue;
 }
-
-function initValidator(source: any) {
-  if (!Array.isArray(source)) source = [source];
-  source.forEach((item: any) =>
-    Object.getOwnPropertyNames(item).forEach((key) => {
-      const target = item[key];
-      (WsPropsType as any)[key] = target;
-    })
-  );
-}
-
-function extendsValidator(name: string, validator: ValidatorFunction) {
-  (WsPropsType as any)[name] = createChainableTypeChecker(validator);
-}
-
-initValidator([
-  PropTypes,
-  ExtendsValidator,
-  {
-    checkPropTypes,
-    boolean: PropTypes.bool,
-    function: PropTypes.func,
-    shape: createShapeTypeChecker,
-    arrayOf: createArrayOfTypeChecker,
-    // exact: createStrictShapeTypeChecker,
-  },
-  {
-    extendsValidator,
-    util: {
-      createChainableTypeChecker,
-      createExpectedTypeChecker,
-      validatorLog,
-    },
-    apiUtil: { WrapperApi },
-    setEnv: (env: RunEnv) => {
-      WsPropsType.env = env;
-    },
-    // PropsPlugin,
-  },
-]);
-initEnv(WsPropsType);
-initAutoFactory(WsPropsType);
-initDefaultValue(WsPropsType);
-export default WsPropsType;

@@ -1,4 +1,4 @@
-import WsPropsType from '..';
+import WsPropsType from '../index.dev';
 import './validator'
 import './testPromise';
 const Plugin = WsPropsType.PropsPlugin;
@@ -14,7 +14,7 @@ console.log("window.PropsPlugin--object", Plugin.getTypeSpec({}))
 console.log("window.PropsPlugin--date", Plugin.getTypeSpec(new Date()))
 console.log("window.PropsPlugin--regex", Plugin.getTypeSpec(/\w/))
 console.log("window.PropsPlugin--promise", Plugin.getTypeSpec(Promise.resolve()))
-console.log("window.PropsPlugin--bigint", Plugin.getTypeSpec(1n))
+// console.log("window.PropsPlugin--bigint", Plugin.getTypeSpec(1n))
 console.log("window.PropsPlugin--object", Plugin.getTypeSpec({ data: [] }))
 // typedArray
 console.log("window.PropsPlugin--ArrayBuffer", Plugin.getTypeSpec(new ArrayBuffer(0)))

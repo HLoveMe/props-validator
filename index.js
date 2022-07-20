@@ -5,8 +5,7 @@
 
 
 if (process.env.NODE_ENV !== 'production') {
-  module.exports = require('./cjs/index')
+  module.exports = require('./esm5/index')
 } else {
-
-  module.exports = require('./cjs/index.min')
+  module.exports = require('./cjs/esm5.min')
 }
