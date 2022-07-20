@@ -902,7 +902,7 @@ function initDefaultValue(ws) { }
  * @Author: zihao.zhu@github.com
  * @Date: 2022-01-14 16:17:32
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-07-20 10:08:44
+ * @Last Modified time: 2022-07-20 11:16:43
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
@@ -1072,10 +1072,10 @@ function initAutoFactory(WsProps) {
             var result = PropsPlugin.switchExec(source)("", source, isRequire, 0, option);
             typeof result === "object" &&
                 (result.__tag = "'".concat(PropsPlugin.__getID(), "'"));
-            return JSON.stringify(result, null, 2)
-                .replace(/\n/g, "")
-                .replace(/"/g, "")
-                .replace(/\\/g, "");
+            var topName = option.topName === DefaultOption_1.topName ? DefaultOption_1.topName : "".concat(DefaultOption_1.topName, " as ").concat(option.topName);
+            var Spec = "\n  import OV , { ".concat(topName, "} from 'types-format';\n  const Spec = ").concat(JSON.stringify(result, null, 2), ";\n");
+            console.info(Spec);
+            return Spec;
         };
         extendTypedArray(PropsPlugin);
         extendBigInt(PropsPlugin);

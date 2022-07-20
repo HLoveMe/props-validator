@@ -3,7 +3,7 @@
  * @Author: zihao.zhu@github.com
  * @Date: 2022-01-14 16:17:32
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-07-20 10:08:44
+ * @Last Modified time: 2022-07-20 11:16:43
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
@@ -40,7 +40,7 @@ export declare interface PluginExec {
 const PropsPlugin: any = {
   extends: [] as Array<PluginExec>,
   getTypeSpec: () => "{}",
-  extendsFactory: () => {},
+  extendsFactory: () => { },
 };
 
 const getType = (value: string) => {
@@ -62,7 +62,7 @@ export default function initAutoFactory(WsProps: any) {
       1,
       "",
       false,
-      () => {},
+      () => { },
       Symbol.for(""),
       new Date(),
       /\w/,
@@ -91,7 +91,7 @@ export default function initAutoFactory(WsProps: any) {
       ): string {
         return (
           typeArray.find((item) => item.type === objStr)?.validator[
-            Number(isRequire)
+          Number(isRequire)
           ] || ""
         );
       };
@@ -103,7 +103,7 @@ export default function initAutoFactory(WsProps: any) {
     ): string {
       return (
         typeArray.find((item) => item.type === toTypeString(null))?.validator[
-          Number(isRequire)
+        Number(isRequire)
         ] || ""
       );
     };
@@ -261,10 +261,14 @@ export default function initAutoFactory(WsProps: any) {
       );
       typeof result === "object" &&
         (result.__tag = `'${PropsPlugin.__getID()}'`);
-      return JSON.stringify(result, null, 2)
-        .replace(/\n/g, "")
-        .replace(/"/g, "")
-        .replace(/\\/g, "");
+      const topName = option.topName === DefaultOption.topName ? DefaultOption.topName : `${DefaultOption.topName} as ${option.topName}`
+      const Spec =
+`
+  import OV , { ${topName}} from 'types-format';
+  const Spec = ${JSON.stringify(result, null, 2)};
+`
+      console.info(Spec)
+      return Spec;
     };
 
     extendTypedArray(PropsPlugin);
