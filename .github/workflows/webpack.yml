@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
     
 jobs:
-  build_publish:
+  build_npm_publish:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
