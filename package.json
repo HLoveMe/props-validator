@@ -17,6 +17,7 @@
   "files": [
     "esm5",
     "index.js",
+    "package.json",
     "index.d.ts"
   ],
   "devDependencies": {
