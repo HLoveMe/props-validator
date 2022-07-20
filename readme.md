@@ -8,11 +8,11 @@
 
 - 安装
   ```
-  npm i object-types
+  npm i types-format
   ```
 - 使用
   ```typescript
-  import OV , { Type } from 'object-types';
+  import OV , { Type } from 'types-format';
   const Spec = {
     name:Type.string,
     age:Type.number.isRequired
@@ -35,7 +35,7 @@
   * 类型验证
 
     ```typescript
-    import OV , { Type } from 'object-types';
+    import OV , { Type } from 'types-format';
     const Spec =  {
       __tag:'',//可选 便于定位问题。
       data: Type.arrayOf(Type.number), // 验证数据- 数组
@@ -60,7 +60,7 @@
   * 格式验证错误详细
   
     ```typescript
-    import OV , { Type } from 'object-types';
+    import OV , { Type } from 'types-format';
     const error = OV.checkPropTypes({},{})
     Validator Error。 [typeSpec.__tag]:[08ACDacd] => Error: {
       "a": "属性:[a]的值等于['<<anonymous>>'],期待为 number 类型/值，实际类型/值： string .",
@@ -74,7 +74,7 @@
   * extendsValidator 扩展验证
 
     ```typescript
-    import OV , { Type } from 'object-types';
+    import OV , { Type } from 'types-format';
     extendsValidator('isNaN',(props,propsName)=>{
       const value = props[propsName];
       if(isNaN(value)){
@@ -97,7 +97,7 @@
     
   - 实例 
     ```typescript
-      import OV , { Type } from 'object-types';
+      import OV , { Type } from 'types-format';
       const PropsPlugin = OV.PropsPlugin;
       const Spec = PropsPlugin.getTypeSpec({
         data: [
@@ -137,7 +137,7 @@
     ```
     - 增加对类型 Engin 的扩展
       ```typescript
-      import OV , { Type } from 'object-types';
+      import OV , { Type } from 'types-format';
       const PropsPlugin = OV.PropsPlugin;
       // 扩展对 Engin 对象的的支持
       class Engin{
@@ -228,7 +228,7 @@
   old : 
   	await ApiServe.getA()
   new : 
-    import OV , { Type } from 'object-types';
+    import OV , { Type } from 'types-format';
   	const NApiServe = OV.apiUtil.WrapperApi(ApiServe,ApiSpec)
       // 会对返回数据进行校验。仅仅输出校验结果。不影响其他流程。
     await NApiServe.getA()
