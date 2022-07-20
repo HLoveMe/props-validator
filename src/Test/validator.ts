@@ -1,4 +1,4 @@
-import WsPropsType from '../index'
+import WsPropsType from '../index.dev'
 
 const Spec1 = {
   __tag:'Spec1',
@@ -21,6 +21,7 @@ const Spec2 = {
     return value > 2020 ? "" : new Error('年龄不能小于2020')
   }
 }
+
 const Spec3 = {
   __tag:'Spec3',
   a: WsPropsType.string.isRequired,

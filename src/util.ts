@@ -2,11 +2,11 @@
  * @Author: zihao.zhu@github.com 
  * @Date: 2022-01-21 14:20:05 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-03-09 15:05:19
+ * @Last Modified time: 2022-07-20 09:41:52
  * @desc : 工具类 包装 
  */
 import PropTypes from 'prop-types';
-import { TypeSpecSpace } from '.';
+import { TypeSpecSpace } from './types';
 import { isProduction } from './Env';
 import { flattenError, ObjectValidatorError, ValidatorError, showDifferenceTable } from './Error';
 declare type GetType = (target: any) => string;

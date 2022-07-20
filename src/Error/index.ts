@@ -1,11 +1,11 @@
 /*
  * @Author: zihao.zhu@github.com 
  * @Date: 2022-01-21 14:21:47 
- * @Last Modified by:   zihao.zhu 
- * @Last Modified time: 2022-01-21 14:21:47 
+ * @Last Modified by: zihao.zhu
+ * @Last Modified time: 2022-07-20 09:40:55
  * @desc : Error 类 
  */
-import { TypeSpecSpace } from "..";
+import { TypeSpecSpace } from "../types";
 
 interface ErrorStruct {
   propsName: string;

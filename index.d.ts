@@ -2,14 +2,14 @@
  * @Author: zihao.zhu@github.com 
  * @Date: 2022-01-21 14:19:46 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-02-22 09:32:12
+ * @Last Modified time: 2022-07-20 10:14:08
  * @desc : 类型声明和验证 
  */
 /* eslint-disable @typescript-eslint/no-redeclare */
 
 import PropTypes, { ReactComponentLike, ReactElementLike, ReactNodeLike } from 'prop-types';
 
-declare type ErrorAble = null | Error | any;
+declare type ErrorAble = null | Error 
 declare type ShowIDString = string;
 declare type DateString = string;
 declare type DateStamp = number;
@@ -17,10 +17,7 @@ declare type ExecName = string
 declare type ValidatorFunction = (props: any, propName: string) => ErrorAble;
 declare type ValidatorSource = any;
 
-export enum RunEnv {
-  dev = 'development',
-  prod = 'production',
-}
+export type RunEnv = 'development' | 'production'
 
 declare type AsyncFunction = (...args: any[]) => Promise<any>
 interface ValidatorData extends Object {
@@ -73,10 +70,7 @@ declare interface PropsPluginSpace {
   getTypeSpec(target: any, isRequire?: boolean, option?: FactoryOption): TypeSpecSpaceString
   extendsFactory(plugin: PluginExec): void;
 }
-
-export interface PropsValidatorClass {
-  env: RunEnv;
-  //
+interface Type {
   any: PropTypes.Requireable<any>;
   array: PropTypes.Requireable<any[]>;
   bool: PropTypes.Requireable<boolean>;
@@ -113,7 +107,7 @@ export interface PropsValidatorClass {
   buffer: PropTypes.Requireable<ArrayBuffer>;
   dataview: PropTypes.Requireable<DataView>;
   // BigInt
-  bigint: PropTypes.Requireable<bigint>;
+  // bigint: PropTypes.Requireable<bigint>;
 
 
 
@@ -130,24 +124,9 @@ export interface PropsValidatorClass {
 
 
   checkPropTypes(typeSpecs: TypeSpecSpace, values: any, showDifference?: boolean): ErrorAble;
+}
+interface PropsValidatorClass extends Type {
 
-  /**
-   * 扩展现有验证条件
-   * extendsValidator('isNaN',(props,propsName)=>{
-   *    const value = props[propsName];
-   *    if(isNaN(value)){
-   *      return null
-   *    }
-   *    return  return new Error('必须是NaN');
-   * })
-   * 
-   * checkPropTypes({
-   *   some:Props.isNaN,
-   *   other:Props.isNaN.isRequired,
-   * },{some:NaN,other:1})
-   * @param name 
-   * @param source 
-   */
   extendsValidator(name: string, source: ValidatorFunction): void;
   //设置运行环境
   // production: 不会运行任何检查
@@ -160,10 +139,10 @@ export interface PropsValidatorClass {
   apiUtil: ApiUtil;
 }
 
-declare type instanceOfValue = ReturnType<PropsValidator["instanceOf"]>
-declare type oneOfTypeValue = ReturnType<PropsValidator["oneOfType"]>
-declare type shapeValue = ReturnType<PropsValidator["shape"]>
-declare type exactValue = ReturnType<PropsValidator["exact"]>
+declare type instanceOfValue = ReturnType<Type["instanceOf"]>
+declare type oneOfTypeValue = ReturnType<Type["oneOfType"]>
+declare type shapeValue = ReturnType<Type["shape"]>
+declare type exactValue = ReturnType<Type["exact"]>
 declare type SpecValue =
   | PropTypes.Requireable<any>
   | PropTypes.Validator<any>
@@ -173,6 +152,7 @@ declare type SpecValue =
   | shapeValue
   | exactValue
   | ShowIDString
+  | ((props: any, name: string) => boolean | Error)
 
 export interface TypeSpecSpaceTag {
   __tag: ShowIDString;
@@ -184,7 +164,8 @@ export interface TypeSpecSpace extends TypeSpecSpaceTag {
 export declare interface PromiseExtends<T> extends Promise<T> {
   validator(typeSpec: TypeSpecSpace, handle?: (source: any) => ValidatorSource): PromiseExtends<ValidatorData>;
 }
+declare const OValidator: PropsValidatorClass;
 
-const PropsValidator:PropsValidatorClass;
+export const Type: Type;
 
-export default PropsValidator;
+export default OValidator;

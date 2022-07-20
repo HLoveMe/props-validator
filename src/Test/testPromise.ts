@@ -1,4 +1,5 @@
-import WsPropsType, { PromiseExtends } from ".."
+import WsPropsType from "../index.dev"
+import { PromiseExtends } from '../types'
 
 
 (Promise.resolve({ a: 'null', b: 'bb', c: { d: 1, e: { ee: 1, eee: [] } }, f: [ Symbol()] }) as PromiseExtends<any>).validator({

@@ -3,7 +3,7 @@
  * @Author: zihao.zhu@github.com
  * @Date: 2022-01-14 16:17:32
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-02-22 17:23:16
+ * @Last Modified time: 2022-07-20 10:08:44
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
@@ -55,7 +55,7 @@ const Wrapper = (type: string, topName: string): Array<string> => [
 
 export default function initAutoFactory(WsProps: any) {
   if (!isProduction()) {
-    const DefaultOption = { maxDepth: 3, topName: "WsPropsType" };
+    const DefaultOption = { maxDepth: 3, topName: "Type" };
     const baseSource = [
       null,
       undefined,
@@ -312,25 +312,25 @@ function extendTypedArray(plugin: typeof PropsPlugin) {
 }
 
 function extendBigInt(plugin: typeof PropsPlugin) {
-  plugin.extendsFactory &&
-    plugin.extendsFactory({
-      test: (source: any) => {
-        return typeof source === typeof 1n;
-      },
-      choice: (props: any, propName: string, typeObject: TypeObject): string =>
-        "bigint",
-      execMap: {
-        bigint: function (
-          props: any,
-          value: any,
-          isRequire: boolean = false,
-          depth = 0,
-          option: FactoryOption
-        ): string {
-          const type = toTypeString(value);
-          const minType = getType(type).toLocaleLowerCase();
-          return `${Wrapper(minType, option.topName)[Number(isRequire)]}`;
-        },
-      },
-    } as unknown as PluginExec);
+  // plugin.extendsFactory &&
+  //   plugin.extendsFactory({
+  //     test: (source: any) => {
+  //       return typeof source === typeof 1n;
+  //     },
+  //     choice: (props: any, propName: string, typeObject: TypeObject): string =>
+  //       "bigint",
+  //     execMap: {
+  //       bigint: function (
+  //         props: any,
+  //         value: any,
+  //         isRequire: boolean = false,
+  //         depth = 0,
+  //         option: FactoryOption
+  //       ): string {
+  //         const type = toTypeString(value);
+  //         const minType = getType(type).toLocaleLowerCase();
+  //         return `${Wrapper(minType, option.topName)[Number(isRequire)]}`;
+  //       },
+  //     },
+  //   } as unknown as PluginExec);
 }

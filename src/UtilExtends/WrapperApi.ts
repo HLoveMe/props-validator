@@ -2,10 +2,10 @@
  * @Author: zihao.zhu@github.com 
  * @Date: 2022-01-21 14:20:38 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-01-21 16:55:21
+ * @Last Modified time: 2022-07-20 09:41:40
  * @desc : 工具函数包装Api请求 
  */
-import { PromiseExtends, TypeSpecSpace } from "..";
+import { PromiseExtends, TypeSpecSpace } from "../types";
 import { isProduction } from "../Env";
 
 declare type AsyncFunction = (...args: any[]) => Promise<any>

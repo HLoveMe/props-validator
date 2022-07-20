@@ -1,10 +1,11 @@
 {
-  "name": "props-validator",
-  "version": "0.0.1",
-  "description": "Props Validator",
+  "name": "object-types",
+  "version": "1.0.0",
+  "description": "Object Types Validator,用于数据格式验证，并提供详细的验证说明。",
   "main": "index.js",
+  "module":"index.js",
+  "types":"./index.d.ts",
   "scripts": {
-    "dev": "webpack --config webpack.config.dev.js",
     "build": "webpack --config webpack.config.js"
   },
   "author": "",
@@ -13,11 +14,11 @@
     "@types/prop-types": "^15.7.4",
     "prop-types": "^15.8.1"
   },
-  "files":{
-    "cjs",
+  "files": [
+    "esm5",
     "index.js",
     "index.d.ts"
-  },
+  ],
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",
@@ -25,6 +26,7 @@
     "babel-loader": "^8.2.3",
     "terser-webpack-plugin": "^5.3.1",
     "ts-loader": "^9.2.8",
+    "tslib": "^2.4.0",
     "typescript": "^4.6.2",
     "webpack": "^5.67.0",
     "webpack-cli": "^4.9.2"
