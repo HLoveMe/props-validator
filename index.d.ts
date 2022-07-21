@@ -2,7 +2,7 @@
  * @Author: zihao.zhu@github.com 
  * @Date: 2022-01-21 14:19:46 
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-07-20 10:14:08
+ * @Last Modified time: 2022-07-21 12:01:16
  * @desc : 类型声明和验证 
  */
 /* eslint-disable @typescript-eslint/no-redeclare */

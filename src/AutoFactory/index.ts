@@ -3,7 +3,7 @@
  * @Author: zihao.zhu@github.com
  * @Date: 2022-01-14 16:17:32
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-07-21 11:03:11
+ * @Last Modified time: 2022-07-21 12:06:39
  * @desc : 用于自动生成propsType的验证器
  * 1:基础数据
  * 2:数组 / 对象 / typedArray
@@ -40,7 +40,7 @@ export declare interface PluginExec {
 const PropsPlugin: any = {
   extends: [] as Array<PluginExec>,
   getTypeSpec: () => '{}',
-  extendsFactory: () => {},
+  extendsFactory: () => { },
 };
 
 const getType = (value: string) => {
@@ -61,7 +61,7 @@ export default function initAutoFactory(WsProps: any) {
     1,
     '',
     false,
-    () => {},
+    () => { },
     Symbol.for(''),
     new Date(),
     /\w/,
@@ -88,7 +88,7 @@ export default function initAutoFactory(WsProps: any) {
     ): string {
       return (
         typeArray.find((item) => item.type === objStr)?.validator[
-          Number(isRequire)
+        Number(isRequire)
         ] || ''
       );
     };
@@ -100,7 +100,7 @@ export default function initAutoFactory(WsProps: any) {
   ): string {
     return (
       typeArray.find((item) => item.type === toTypeString(null))?.validator[
-        Number(isRequire)
+      Number(isRequire)
       ] || ''
     );
   };
@@ -252,11 +252,12 @@ export default function initAutoFactory(WsProps: any) {
   import OV , { ${topName}} from 'types-format';
   const Spec = ${JSON.stringify(result, null, 2)};
 `;
-    !isProduction() &&
+    if (!isProduction()) {
+      const execStr = `\`${Spec}\`.replace(/\"/g,'').replace(/\\r|\\n/g,'')`;
       console.info(
-        '运行一下代码，得到javascript\r\n',
-        `\`${Spec}\`.replace(/\"/g,'').replace(/\\r|\\n/g,'')`
-      );
+        Function(`return ${execStr}`)()
+      )
+    }
     return Spec;
   };
 
