@@ -22,13 +22,13 @@ function read(target) {
 }
 
 function format(jsStr) {
-  const code = generate(parse(jsStr, {
-    sourceType: "module"
-  }), {
-    retainLines: true,
-    comments: true,
-  }).code
-  debugger
+  // const code = generate(parse(jsStr, {
+  //   sourceType: "module"
+  // }), {
+  //   retainLines: true,
+  //   comments: true,
+  // }).code
+  // debugger
 }
 
 function exec(target) {
