@@ -2,12 +2,12 @@
 
 const fs = require('fs');
 const path = require('path');
-var {
-  parse
-} = require('@babel/parser');
-var {
-  default: generate
-} = require('@babel/generator');
+// var {
+//   parse
+// } = require('@babel/parser');
+// var {
+//   default: generate
+// } = require('@babel/generator');
 const TypeCreate = require("../dist/cjs/index.prod")
 const OB = TypeCreate.default;
 const current = process.cwd();
