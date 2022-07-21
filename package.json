@@ -1,12 +1,12 @@
 {
   "name": "types-format",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Object Types Validator,用于数据格式验证，并提供详细的验证说明。",
   "main": "index.js",
-  "module":"index.js",
-  "types":"./index.d.ts",
+  "module": "index.js",
+  "types": "./index.d.ts",
   "scripts": {
-    "build": "webpack --config webpack.config.js"
+    "build": "tsc -p ./tsconfig.node.json && webpack --config webpack.config.js"
   },
   "author": "",
   "license": "ISC",
@@ -15,11 +15,15 @@
     "prop-types": "^15.8.1"
   },
   "files": [
-    "esm5",
+    "bin",
+    "dist",
     "index.js",
     "package.json",
     "index.d.ts"
   ],
+  "bin": {
+    "auto-create": "bin/auto-create.js"
+  },
   "devDependencies": {
     "@babel/core": "^7.16.12",
     "@babel/plugin-proposal-optional-chaining": "^7.16.7",

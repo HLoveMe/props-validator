@@ -130,6 +130,27 @@
         }
       `
     ```
+  - node 工具。 支持本地命令行 【推荐】
+
+    ```
+    dome.txt文件
+        {a:1,b:['11'],c:{name:"zz",age:100}}
+    在工程更目录下，执行下面命令
+      npx auto-create ./dome.txt >> out.js
+    输出out.js
+      import OV, {
+        Type
+      } from 'types-format';
+      const Spec = {
+        a: Type.number.isRequired,
+        b: Type.arrayOf(Type.string).isRequired,
+        c: Type.shape({
+          name: Type.string.isRequired,
+          age: Type.number.isRequired
+        }).isRequired,
+        __tag: '4QfQ9RGeH6'
+      };
+    ```
 
   - 扩展工具函数
     ```
