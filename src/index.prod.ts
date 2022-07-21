@@ -4,10 +4,10 @@ import initDefaultValue from "./DefaultValue";
 import { initEnv } from "./Env";
 import initAutoFactory from "./AutoFactory";
 
+OV.setEnv('production')
 initEnv(OV);
 initAutoFactory(OV);
 initDefaultValue(OV);
-OV.setEnv('production')
 
 export const Type: WsType = OV
 export default OV;

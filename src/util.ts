@@ -1,24 +1,31 @@
 /*
- * @Author: zihao.zhu@github.com 
- * @Date: 2022-01-21 14:20:05 
+ * @Author: zihao.zhu@github.com
+ * @Date: 2022-01-21 14:20:05
  * @Last Modified by: zihao.zhu
- * @Last Modified time: 2022-07-20 09:41:52
- * @desc : 工具类 包装 
+ * @Last Modified time: 2022-07-20 18:33:42
+ * @desc : 工具类 包装
  */
 import PropTypes from 'prop-types';
 import { TypeSpecSpace } from './types';
 import { isProduction } from './Env';
-import { flattenError, ObjectValidatorError, ValidatorError, showDifferenceTable } from './Error';
+import {
+  flattenError,
+  ObjectValidatorError,
+  ValidatorError,
+  showDifferenceTable,
+} from './Error';
 declare type GetType = (target: any) => string;
-const toTypeString: GetType = Function.call.bind(Object.prototype.toString) as unknown as GetType;
-const ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED'
+const toTypeString: GetType = Function.call.bind(
+  Object.prototype.toString
+) as unknown as GetType;
+const ReactPropTypesSecret = 'SECRET_DO_NOT_PASS_THIS_OR_YOU_WILL_BE_FIRED';
 
 const validatorSymbol = Symbol.for('validatorDisplayName');
 
 const has = Function.call.bind(Object.prototype.hasOwnProperty);
 
 function isSymbol(propType: any, propValue: any): boolean {
-  if (propType === 'symbol') return true
+  if (propType === 'symbol') return true;
   if (!propValue) return false;
   if (propValue['@@toStringTag'] === 'Symbol') return true;
   if (typeof Symbol === 'function' && propValue instanceof Symbol) return true;
@@ -40,6 +47,19 @@ function getPreciseType(propValue: any): string {
   return propType;
 }
 
+function getTop() {
+  var freeGlobal =
+    typeof globalThis == 'object' &&
+    globalThis &&
+    globalThis.Object === Object &&
+    globalThis;
+
+  var freeSelf =
+    typeof self == 'object' && self && self.Object === Object && self;
+
+  return freeGlobal || freeSelf || Function('return this')();
+}
+
 function getPropType(propValue: any): string {
   const propType = typeof propValue;
   if (Array.isArray(propValue)) return 'array';
@@ -49,11 +69,23 @@ function getPropType(propValue: any): string {
 }
 
 function createChainableTypeChecker(validate: any): PropTypes.Requireable<any> {
-  function checkType(isRequired: boolean, props: string, propName: any, c: any, l: any, propFullName: string) {
+  function checkType(
+    isRequired: boolean,
+    props: string,
+    propName: any,
+    c: any,
+    l: any,
+    propFullName: string
+  ) {
     propFullName = propFullName || propName;
     if (props[propName] == null) {
       if (isRequired) {
-        return wrapperError(propName, props[propName], '非空', 'null/undefined');
+        return wrapperError(
+          propName,
+          props[propName],
+          '非空',
+          'null/undefined'
+        );
       }
       return null;
     } else {
@@ -66,12 +98,17 @@ function createChainableTypeChecker(validate: any): PropTypes.Requireable<any> {
   return chainedCheckType as any;
 }
 
-function wrapperError(propsName: string, value: any, expectedType: string, preciseType: string): ValidatorError {
+function wrapperError(
+  propsName: string,
+  value: any,
+  expectedType: string,
+  preciseType: string
+): ValidatorError {
   return new ValidatorError(`${propsName} 验证失败`, propsName, {
     propsName,
     value,
     expectedType,
-    preciseType
+    preciseType,
   });
 }
 
@@ -79,7 +116,9 @@ function wrapperError(propsName: string, value: any, expectedType: string, preci
  * 验证属性类型 是否为给定的值
  * createExpectedTypeChecker('[object Array]')
  */
-function createExpectedTypeChecker(expectedType: string): PropTypes.Requireable<any> {
+function createExpectedTypeChecker(
+  expectedType: string
+): PropTypes.Requireable<any> {
   function validate(props: any, propName: string) {
     const propValue = props[propName];
     const propType = toTypeString(propValue);
@@ -92,8 +131,12 @@ function createExpectedTypeChecker(expectedType: string): PropTypes.Requireable<
   return createChainableTypeChecker(validate);
 }
 
-function checkPropTypes(typeSpecs: TypeSpecSpace, values: any, showDifference: boolean = true): Error | null {
-  if(isProduction()) return null;
+function checkPropTypes(
+  typeSpecs: TypeSpecSpace,
+  values: any,
+  showDifference: boolean = true
+): Error | null {
+  if (isProduction()) return null;
   let objectError: any = {};
   let error = null;
   for (const typeSpecName in typeSpecs) {
@@ -105,23 +148,44 @@ function checkPropTypes(typeSpecs: TypeSpecSpace, values: any, showDifference: b
           err.name = 'Invariant Violation';
           throw err;
         }
-        error = (typeSpecs as any)[typeSpecName](values, typeSpecName, '', '', null, ReactPropTypesSecret);
-        objectError[typeSpecName] = (!!error === false || error instanceof ObjectValidatorError) ? error : new ValidatorError(`${typeSpecName} 验证失败`, typeSpecName, error, values[typeSpecName]);
+        error = (typeSpecs as any)[typeSpecName](
+          values,
+          typeSpecName,
+          '',
+          '',
+          null,
+          ReactPropTypesSecret
+        );
+        objectError[typeSpecName] =
+          !!error === false || error instanceof ObjectValidatorError
+            ? error
+            : new ValidatorError(
+                `${typeSpecName} 验证失败`,
+                typeSpecName,
+                error,
+                values[typeSpecName]
+              );
       } catch (ex) {
         objectError = ex;
         break;
       }
     }
   }
-  if (Object.values(objectError).filter($1 => !!$1 === true).length > 0) {
+  if (Object.values(objectError).filter(($1) => !!$1 === true).length > 0) {
     if (showDifference) showDifferenceTable(typeSpecs, values, objectError);
-    return new Error(flattenError(objectError))
+    return new Error(flattenError(objectError));
   }
   return null;
 }
 function createArrayOfTypeChecker(typeChecker: any) {
-  function validate(props: any, propName: string, componentName: string, location: string, propFullName: string) {
-    const errors: Array<ValidatorError> = []
+  function validate(
+    props: any,
+    propName: string,
+    componentName: string,
+    location: string,
+    propFullName: string
+  ) {
+    const errors: Array<ValidatorError> = [];
     const propValue = props[propName];
     if (!Array.isArray(propValue)) {
       const propType = getPropType(propValue);
@@ -129,8 +193,23 @@ function createArrayOfTypeChecker(typeChecker: any) {
       // return new PropTypeError('Invalid ' + location + ' `' + propFullName + '` of type ' + ('`' + propType + '` supplied to `' + componentName + '`, expected an array.'));
     }
     for (let i = 0; i < propValue.length; i++) {
-      const error = typeChecker(propValue, i, componentName, location, propFullName + '[' + i + ']', ReactPropTypesSecret);
-      error && errors.push(new ValidatorError(`${propFullName} 验证失败`, propFullName, error, propValue))
+      const error = typeChecker(
+        propValue,
+        i,
+        componentName,
+        location,
+        propFullName + '[' + i + ']',
+        ReactPropTypesSecret
+      );
+      error &&
+        errors.push(
+          new ValidatorError(
+            `${propFullName} 验证失败`,
+            propFullName,
+            error,
+            propValue
+          )
+        );
     }
     return null;
   }
@@ -138,8 +217,14 @@ function createArrayOfTypeChecker(typeChecker: any) {
 }
 
 function createShapeTypeChecker(shapeTypes: any) {
-  function validate(props: any, propName: string, componentName: string, location: string, propFullName: string) {
-    const errors: Array<ValidatorError> = []
+  function validate(
+    props: any,
+    propName: string,
+    componentName: string,
+    location: string,
+    propFullName: string
+  ) {
+    const errors: Array<ValidatorError> = [];
     const propValue = props[propName];
     const propType = getPropType(propValue);
     if (propType !== 'object') {
@@ -150,11 +235,30 @@ function createShapeTypeChecker(shapeTypes: any) {
       if (!checker) {
         continue;
       }
-      const error = checker(propValue, key, componentName, location, propFullName + '.' + key, ReactPropTypesSecret);
-      error && errors.push(new ValidatorError(`${propFullName} 验证失败`, propFullName, error, propValue))
+      const error = checker(
+        propValue,
+        key,
+        componentName,
+        location,
+        propFullName + '.' + key,
+        ReactPropTypesSecret
+      );
+      error &&
+        errors.push(
+          new ValidatorError(
+            `${propFullName} 验证失败`,
+            propFullName,
+            error,
+            propValue
+          )
+        );
     }
     if (errors.length > 0) {
-      const objError = new ObjectValidatorError(`验证错误：${propFullName}`, propFullName, errors)
+      const objError = new ObjectValidatorError(
+        `验证错误：${propFullName}`,
+        propFullName,
+        errors
+      );
       return objError;
     }
     return null;
@@ -163,10 +267,15 @@ function createShapeTypeChecker(shapeTypes: any) {
 }
 
 function validatorLog(_: any, typeSpec: TypeSpecSpace, msg: Error) {
-  !isProduction() && console.log(`Validator Error。 [typeSpec.__tag]:[${typeSpec.__tag}] =>`, msg);
+  !isProduction() &&
+    console.log(
+      `Validator Error。 [typeSpec.__tag]:[${typeSpec.__tag}] =>`,
+      msg
+    );
 }
 
 export {
+  getTop,
   toTypeString,
   getPropType,
   getPreciseType,
@@ -180,4 +289,4 @@ export {
   createArrayOfTypeChecker,
   // .exact({})
   // createStrictShapeTypeChecker
-}
+};

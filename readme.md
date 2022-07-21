@@ -92,7 +92,8 @@
 ### 工具函数
 
   ```
-  为解决给大型对象(属性过多，层级过深),手写Sepc对象过于繁琐的问题。提供自动生成验证格式对象 PropsPlugin 生成Spec的工具函数
+  为解决给大型对象(属性过多，层级过深),手写Sepc对象过于繁琐的问题。
+  提供自动生成验证格式对象 PropsPlugin 生成Spec的工具函数
   ```  
     
   - 实例 
@@ -131,9 +132,37 @@
       `
     ```
 
+  - node 工具。 支持本地命令行 【推荐】
+
+    ```typescript
+
+    dome.txt文件内容
+
+        {a:1,b:['11'],c:{name:"zz",age:100}}
+
+    在工程更目录下，执行下面命令
+
+      npx auto-create ./dome.txt >> out.js
+
+    输出out.js
+      import OV, {
+        Type
+      } from 'types-format';
+      const Spec = {
+        a: Type.number.isRequired,
+        b: Type.arrayOf(Type.string).isRequired,
+        c: Type.shape({
+          name: Type.string.isRequired,
+          age: Type.number.isRequired
+        }).isRequired,
+        __tag: '4QfQ9RGeH6'
+      };
+    ```
+
   - 扩展工具函数
     ```
-     除基础格式（any,array，bool|boolean，func|funcction，number，object:，string，node，element，symbol，elementType，）。其他都可进行覆盖
+     除基础格式（any,array，bool|boolean，func|funcction，number，
+     object:，string，node，element，symbol，elementType，）。其他都可进行覆盖
     ```
     - 增加对类型 Engin 的扩展
       ```typescript
