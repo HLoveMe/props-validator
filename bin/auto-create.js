@@ -2,12 +2,12 @@
 
 const fs = require('fs');
 const path = require('path');
-var {
-  parse
-} = require('@babel/parser');
-var {
-  default: generate
-} = require('@babel/generator');
+// var {
+//   parse
+// } = require('@babel/parser');
+// var {
+//   default: generate
+// } = require('@babel/generator');
 const TypeCreate = require("../dist/cjs/index.prod")
 const OB = TypeCreate.default;
 const current = process.cwd();
@@ -22,13 +22,13 @@ function read(target) {
 }
 
 function format(jsStr) {
-  const code = generate(parse(jsStr, {
-    sourceType: "module"
-  }), {
-    retainLines: true,
-    comments: true,
-  }).code
-  debugger
+//   const code = generate(parse(jsStr, {
+//     sourceType: "module"
+//   }), {
+//     retainLines: true,
+//     comments: true,
+//   }).code
+//   debugger
 }
 
 function exec(target) {
