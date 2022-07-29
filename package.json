@@ -21,6 +21,11 @@
     "package.json",
     "index.d.ts"
   ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HLoveMe/props-validator.git"
+  },
+  "homepage": "https://github.com/HLoveMe/props-validator#readme",
   "bin": {
     "auto-create": "bin/auto-create.js"
   },
