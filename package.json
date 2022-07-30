@@ -1,6 +1,6 @@
 {
   "name": "types-format",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Object Types Validator,用于数据格式验证，并提供详细的验证说明。",
   "main": "index.js",
   "module": "index.js",
